@@ -83,7 +83,6 @@ function Home() {
       const jobsSorted = jobData.sort((a, b) =>
         b.number.localeCompare(a.number)
       );
-      console.log(jobsSorted);
       setJobsDetail(jobsSorted);
       handleDataFilter("");
     }

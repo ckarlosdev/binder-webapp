@@ -9,7 +9,7 @@ type Props = {
 };
 
 function JobTable({ items, loading, setBinder }: Props) {
-  
+  console.log(items);
   return (
     <>
       <Table striped bordered hover>
