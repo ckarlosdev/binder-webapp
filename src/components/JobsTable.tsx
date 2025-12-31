@@ -9,6 +9,7 @@ type Props = {
 };
 
 function JobTable({ items, loading, setBinder }: Props) {
+  
   return (
     <>
       <Table striped bordered hover>
