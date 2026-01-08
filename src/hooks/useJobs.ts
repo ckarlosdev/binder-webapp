@@ -3,12 +3,8 @@ import { api } from "./apiConfig";
 import type { Job } from "../types";
 import { useAuthStore } from "./authStore";
 
-const queryJob = async (token: string): Promise<Job[]> => {
-  const { data } = await api.get<Job[]>(`v1/job`, {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  });
+const queryJob = async (): Promise<Job[]> => {
+  const { data } = await api.get<Job[]>(`v1/job`);
   return data;
 };
 
@@ -17,7 +13,7 @@ function useJob() {
 
   return useQuery({
     queryKey: ["job", token],
-    queryFn: () => queryJob(token!),
+    queryFn: queryJob,
     enabled: !!token,
     retry: (failureCount, error: any) => {
       if (error.response?.status === 401) return false;
