@@ -21,16 +21,23 @@ api.interceptors.response.use(
   async (error) => {
     const originalRequest = error.config;
 
+    if (error.response?.status === 401) {
+      console.log("Detectado 401 en /me, intentando salvar la sesión...");
+    }
+
     if (
       error.response?.status === 401 &&
       !originalRequest._retry &&
       !originalRequest.url?.includes("/auth")
     ) {
       originalRequest._retry = true;
-      console.log("Token expired, attempting to refresh...");
 
       try {
         const refreshTokenSaved = useAuthStore.getState().refreshToken;
+        console.log(
+          "Token expired, attempting to refresh...",
+          refreshTokenSaved
+        );
         if (!refreshTokenSaved) throw new Error("No refresh token found");
 
         const res = await axios.post(
@@ -41,8 +48,7 @@ api.interceptors.response.use(
         );
 
         const { token, refreshToken } = res.data;
-        useAuthStore.getState().login(token);
-        useAuthStore.getState().setRefreshToken(refreshToken);
+        useAuthStore.getState().login(token, refreshToken);
 
         originalRequest.headers.Authorization = `Bearer ${token}`;
         return api(originalRequest);
