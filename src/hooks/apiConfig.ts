@@ -40,6 +40,7 @@ api.interceptors.response.use(
         );
 
         const { token, refreshToken } = res.data;
+        
         useAuthStore.getState().login(token, refreshToken);
 
         originalRequest.headers.Authorization = `Bearer ${token}`;
