@@ -16,7 +16,7 @@ function Sections({ job }: Props) {
 
   return (
     <>
-      <Accordion defaultActiveKey={["0"]} alwaysOpen>
+      <Accordion alwaysOpen>
         <Accordion.Item eventKey="0">
           <Accordion.Header>
             <div

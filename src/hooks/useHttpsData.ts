@@ -1,5 +1,6 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
+import { api } from "./apiConfig";
 
 export default <T>(url?: string) => {
   const [data, setData] = useState<T>();
@@ -20,7 +21,7 @@ export default <T>(url?: string) => {
     const controller = new AbortController();
     const signal = controller.signal;
 
-    axios
+    api
       .get<T>(url, { signal })
       .then(({ data }) => {
         if (!aborted) {
@@ -28,7 +29,7 @@ export default <T>(url?: string) => {
         }
       })
       .catch((e) => {
-        if (!aborted) {
+        if (!aborted && !axios.isCancel(e)) {
           console.log(e);
           setError(e);
           setData(undefined);
@@ -48,7 +49,7 @@ export default <T>(url?: string) => {
 
   const search = (url: string) => {
     setLoading(true);
-    axios
+    api
       .get(url)
       .then(({ data }) => {
         setData(data);
@@ -66,7 +67,7 @@ export default <T>(url?: string) => {
     setLoading(true);
     setError(null);
     try {
-      const response = await axios.post<T>(url, payload);
+      const response = await api.post<T>(url, payload);
       setData(response.data);
       return response.data;
     } catch (e: any) {
@@ -84,7 +85,7 @@ export default <T>(url?: string) => {
     setLoading(true);
     setError(null);
     try {
-      const response = await axios.put<T>(url, payload);
+      const response = await api.put<T>(url, payload);
       setData(response.data); // Opcional: actualizar 'data' con la respuesta del PUT
       return response.data;
     } catch (e: any) {

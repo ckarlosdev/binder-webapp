@@ -2,25 +2,28 @@ import { Col, Container, Row } from "react-bootstrap";
 import Title from "../components/Title";
 import JobTable from "../components/JobsTable";
 import Search from "../components/Search";
-import useHttpsData from "../hooks/useHttpsData";
+// import useHttpsData from "../hooks/useHttpsData";
 import type { Job } from "../types";
 import { useEffect, useState } from "react";
-import { getJobsURL } from "../hooks/urls";
+// import { getJobsURL } from "../hooks/urls";
 import { useNavigate } from "react-router-dom";
+import useJob from "../hooks/useJobs";
 
 function Home() {
   const navigate = useNavigate();
+
+  const { data: jobData, isLoading: loadingJobs } = useJob();
 
   const [jobsDetail, setJobsDetail] = useState<Job[]>([]);
   const [jobsFiltered, setJobsFiltered] = useState<Job[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [loadingBinder, setLoadingBinder] = useState(false);
 
-  const {
-    data: jobData,
-    loading: loadingJobs,
-    search: searchJobs,
-  } = useHttpsData<Job[]>();
+  // const {
+  //   data: jobData,
+  //   loading: loadingJobs,
+  //   search: searchJobs,
+  // } = useHttpsData<Job[]>();
 
   const itemsPerPage = 9;
   const indexOfLastItem = currentPage * itemsPerPage;
@@ -73,10 +76,17 @@ function Home() {
     setLoadingBinder(false);
   };
 
-  useEffect(() => {
-    const urlJobs = getJobsURL();
-    searchJobs(urlJobs);
-  }, []);
+  // useEffect(() => {
+  //   const tokenGuardado = localStorage.getItem("auth_token");
+  //   if (tokenGuardado) {
+  //     console.log("Token found");
+  //     const urlJobs = getJobsURL();
+  //     searchJobs(urlJobs);
+  //   } else {
+  //     console.log("Not token found");
+  //     window.location.href = "https://ckarlosdev.github.io/login/";
+  //   }
+  // }, []);
 
   useEffect(() => {
     if (jobData) {
@@ -84,7 +94,8 @@ function Home() {
         b.number.localeCompare(a.number)
       );
       setJobsDetail(jobsSorted);
-      handleDataFilter("");
+      setJobsFiltered(jobsSorted);
+      setCurrentPage(1);
     }
   }, [jobData]);
 

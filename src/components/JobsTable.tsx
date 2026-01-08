@@ -9,7 +9,7 @@ type Props = {
 };
 
 function JobTable({ items, loading, setBinder }: Props) {
-  console.log(items);
+  // console.log(items);
   return (
     <>
       <Table striped bordered hover>
@@ -37,7 +37,10 @@ function JobTable({ items, loading, setBinder }: Props) {
               <td>
                 <Button
                   disabled={!loading ? false : true}
-                  onClick={() => setBinder(job.jobsId)}
+                  onClick={() => {
+                    setBinder(job.jobsId);
+
+                  }}
                 >
                   Binder
                 </Button>

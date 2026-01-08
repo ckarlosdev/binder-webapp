@@ -1,5 +1,5 @@
-import { Col, Container, Row } from "react-bootstrap";
-import { useParams } from "react-router-dom";
+import { Button, Col, Container, Row } from "react-bootstrap";
+import { useNavigate, useParams } from "react-router-dom";
 import Title from "../Title";
 import Sections from "./Sections";
 import CardJob from "./CardJob";
@@ -12,7 +12,7 @@ type Props = {};
 
 function index({}: Props) {
   const params = useParams();
-
+  const navigate = useNavigate();
   const [jobDetail, setJobDetail] = useState<Job>();
 
   const { data: jobData, search: searchJob } = useHttpsData<Job>();
@@ -49,6 +49,24 @@ function index({}: Props) {
         <Row>
           <Col>
             <Sections job={jobDetail} />
+          </Col>
+        </Row>
+        <Row className="justify-content-md-center">
+          <Col style={{ display: "flex", justifyContent: "center" }}>
+            <div style={{ marginTop: "25px", marginBottom: "20px" }}>
+              <Button
+                variant="outline-primary"
+                style={{
+                  fontWeight: "bold",
+                  fontSize: "20px",
+                  width: "150px",
+                  height: "50px",
+                }}
+                onClick={() => navigate("/")}
+              >
+                {"< Job List"}
+              </Button>
+            </div>
           </Col>
         </Row>
       </Container>
