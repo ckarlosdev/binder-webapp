@@ -34,11 +34,11 @@ const LogoutButton = () => {
       style={{
         borderRadius: "10px",
         fontWeight: "bold",
-        width: "100px",
+        width: "120px",
         height: "40px",
       }}
     >
-      {isLoading ? <span>Logging out...</span> : <>Logout</>}
+      {isLoading ? <span>Logging out</span> : <>Logout</>}
     </Button>
   );
 };
