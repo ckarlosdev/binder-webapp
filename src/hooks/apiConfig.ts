@@ -9,7 +9,7 @@ export const api = axios.create({
 });
 
 api.interceptors.request.use((config) => {
-  const token = localStorage.getItem("auth_token");
+  const token = useAuthStore.getState().token;
   if (token) {
     config.headers.Authorization = `Bearer ${token}`;
   }
@@ -21,10 +21,6 @@ api.interceptors.response.use(
   async (error) => {
     const originalRequest = error.config;
 
-    if (error.response?.status === 401) {
-      console.log("Detectado 401 en /me, intentando salvar la sesión...");
-    }
-
     if (
       error.response?.status === 401 &&
       !originalRequest._retry &&
@@ -34,10 +30,6 @@ api.interceptors.response.use(
 
       try {
         const refreshTokenSaved = useAuthStore.getState().refreshToken;
-        console.log(
-          "Token expired, attempting to refresh...",
-          refreshTokenSaved
-        );
         if (!refreshTokenSaved) throw new Error("No refresh token found");
 
         const res = await axios.post(
@@ -53,9 +45,8 @@ api.interceptors.response.use(
         originalRequest.headers.Authorization = `Bearer ${token}`;
         return api(originalRequest);
       } catch (refreshError) {
-        console.error("Refresh token inválido o expirado");
-        // useAuthStore.getState().logout();
-        // window.location.href = "https://ckarlosdev.github.io/login/";
+        useAuthStore.getState().logout();
+        window.location.href = "https://ckarlosdev.github.io/login/";
         return Promise.reject(refreshError);
       }
     }
