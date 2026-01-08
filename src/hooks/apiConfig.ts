@@ -40,7 +40,7 @@ api.interceptors.response.use(
         );
 
         const { token, refreshToken } = res.data;
-        
+
         useAuthStore.getState().login(token, refreshToken);
 
         originalRequest.headers.Authorization = `Bearer ${token}`;
@@ -48,7 +48,7 @@ api.interceptors.response.use(
       } catch (refreshError) {
         console.error("Refresh token error:", refreshError);
         useAuthStore.getState().logout();
-        window.location.href = "https://ckarlosdev.github.io/login/";
+        // window.location.href = "https://ckarlosdev.github.io/login/";
         return Promise.reject(refreshError);
       }
     }

@@ -18,10 +18,6 @@ function useJob() {
     staleTime: 5 * 60 * 1000, // 5 minutos: considera los datos "frescos" y no parpadees
     gcTime: 10 * 60 * 1000, // Mantén en caché 10 min
     retry: false,
-    // retry: (failureCount, error: any) => {
-    //   if (error.response?.status === 401) return false;
-    //   return failureCount < 3;
-    // },
   });
 }
 

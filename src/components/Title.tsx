@@ -1,12 +1,12 @@
 import type { ReactNode } from "react";
 import hmbLogo from "../assets/hmbLogo.png";
+import LogoutButton from "./LogoutButton";
 
 type Props = {
   children: ReactNode;
 };
 
 function Title({ children }: Props) {
-
   return (
     <div
       style={{
@@ -31,7 +31,9 @@ function Title({ children }: Props) {
             {children}
           </h2>
         </div>
-        <div></div>
+        <div>
+          <LogoutButton />
+        </div>
       </div>
     </div>
   );

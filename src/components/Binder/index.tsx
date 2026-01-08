@@ -4,9 +4,10 @@ import Title from "../Title";
 import Sections from "./Sections";
 import CardJob from "./CardJob";
 import { useEffect, useState } from "react";
-import useHttpsData from "../../hooks/useHttpsData";
+// import useHttpsData from "../../hooks/useHttpsData";
 import type { Job } from "../../types";
-import { getJobByIdURL } from "../../hooks/urls";
+import useJob from "../../hooks/useJobs";
+// import { getJobByIdURL } from "../../hooks/urls";
 
 type Props = {};
 
@@ -14,24 +15,17 @@ function index({}: Props) {
   const params = useParams();
   const navigate = useNavigate();
   const [jobDetail, setJobDetail] = useState<Job>();
-
-  const { data: jobData, search: searchJob } = useHttpsData<Job>();
+  const { data: jobsData } = useJob();
 
   useEffect(() => {
     if (params.jobsId) {
-      const url = getJobByIdURL(params.jobsId);
-      //   console.log(url);
-      searchJob(url);
-    }
-  }, []);
 
-  useEffect(() => {
-    if (jobData) {
-      setJobDetail(jobData);
+      const job = jobsData?.find((job) => job.jobsId === Number(params.jobsId));
+      if (job) {
+        setJobDetail(job);
+      }
     }
-  }, [jobData]);
-
-  //   console.log(jobDetail);
+  }, [jobsData, params.jobsId]);
 
   return (
     <>
