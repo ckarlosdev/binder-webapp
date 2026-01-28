@@ -1,7 +1,15 @@
-import { Accordion, Button, Col, Row, Table } from "react-bootstrap";
+import { Accordion, Button, Col, Row } from "react-bootstrap";
 import DRTable from "./DRTable";
 import type { Job } from "../../types";
 import { useState } from "react";
+import HazardTable from "./HazardTable";
+import useHazards from "../../hooks/useHazards";
+import SilicaTable from "./SilicaTable";
+import useSilica from "../../hooks/useSilica";
+import useChecklist from "../../hooks/useChecklists";
+import ChecklistTable from "./ChecklistTable";
+import DemoChecklistTable from "./DemoChecklistTable";
+import useDemoChecklist from "../../hooks/useDemoChecklists";
 
 type Props = {
   job?: Job;
@@ -9,6 +17,10 @@ type Props = {
 
 function Sections({ job }: Props) {
   const [pillDr, setPillDr] = useState<number>(0);
+  const { data: hazards } = useHazards(job?.jobsId ?? 0);
+  const { data: silicaReports } = useSilica(job?.jobsId ?? 0);
+  const { data: checkListReports } = useChecklist(job?.jobsId ?? 0);
+  const { data: demoClReports } = useDemoChecklist(job?.number ?? "");
 
   const handlePill = (num: number) => {
     setPillDr(num);
@@ -49,7 +61,10 @@ function Sections({ job }: Props) {
                     marginTop: "10px",
                   }}
                 >
-                  <a href={`https://ckarlosdev.github.io/daily-report/#/?jobId=${job?.jobsId}`} target="_self">
+                  <a
+                    href={`https://ckarlosdev.github.io/daily-report/#/?jobId=${job?.jobsId}`}
+                    target="_self"
+                  >
                     <Button
                       variant="outline-primary"
                       style={{ fontWeight: "bold" }}
@@ -71,54 +86,168 @@ function Sections({ job }: Props) {
               className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
               id="pill-HazardList"
             >
-              0
+              {hazards?.length ?? 0}
             </span>
           </Accordion.Header>
           <Accordion.Body>
-            <Table striped bordered hover>
-              <thead>
-                <tr className="table-primary" style={{ textAlign: "center" }}>
-                  <th>#</th>
-                  <th>First Name</th>
-                  <th>Last Name</th>
-                  <th>Username</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>1</td>
-                  <td>Mark</td>
-                  <td>Otto</td>
-                  <td>@mdo</td>
-                </tr>
-                <tr>
-                  <td>2</td>
-                  <td>Jacob</td>
-                  <td>Thornton</td>
-                  <td>@fat</td>
-                </tr>
-                <tr>
-                  <td>3</td>
-                  <td colSpan={2}>Larry the Bird</td>
-                  <td>@twitter</td>
-                </tr>
-              </tbody>
-            </Table>
+            <Row>
+              <Col>
+                <HazardTable jobId={job?.jobsId} />
+              </Col>
+            </Row>
+            <Row>
+              <Col>
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "center",
+                    marginTop: "10px",
+                  }}
+                >
+                  <a
+                    href={`https://ckarlosdev.github.io/hazard-report/?jobId=${job?.jobsId}`}
+                    target="_self"
+                  >
+                    <Button
+                      variant="outline-primary"
+                      style={{ fontWeight: "bold" }}
+                    >
+                      New Hazard Report
+                    </Button>
+                  </a>
+                </div>
+              </Col>
+            </Row>
           </Accordion.Body>
         </Accordion.Item>
         <Accordion.Item eventKey="2">
           <Accordion.Header>
             <div className="ms-2 me-auto" style={{ fontWeight: "bold" }}>
-              Equipment Checklist
+              Equipment Checklists
             </div>
             <span
               className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
               id="pill-HazardList"
             >
-              0
+              {checkListReports?.length ?? 0}
             </span>
           </Accordion.Header>
-          <Accordion.Body>Table</Accordion.Body>
+          <Accordion.Body>
+            <Row>
+              <Col>
+                <ChecklistTable jobId={job?.jobsId} />
+              </Col>
+            </Row>
+            <Row>
+              <Col>
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "center",
+                    marginTop: "10px",
+                  }}
+                >
+                  <a
+                    href={`https://ckarlosdev.github.io/checklist-report/#/?jobId=${job?.number}`}
+                    target="_self"
+                  >
+                    <Button
+                      variant="outline-primary"
+                      style={{ fontWeight: "bold" }}
+                    >
+                      New checklist Report
+                    </Button>
+                  </a>
+                </div>
+              </Col>
+            </Row>
+          </Accordion.Body>
+        </Accordion.Item>
+        <Accordion.Item eventKey="3">
+          <Accordion.Header>
+            <div className="ms-2 me-auto" style={{ fontWeight: "bold" }}>
+              Silica Report
+            </div>
+            <span
+              className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
+              id="pill-HazardList"
+            >
+              {silicaReports?.length ?? 0}
+            </span>
+          </Accordion.Header>
+          <Accordion.Body>
+            <Row>
+              <Col>
+                <SilicaTable jobId={job?.jobsId} />
+              </Col>
+            </Row>
+            <Row>
+              <Col>
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "center",
+                    marginTop: "10px",
+                  }}
+                >
+                  <a
+                    href={`https://ckarlosdev.github.io/silica-report/index.html?jobNumber=${job?.number}`}
+                    target="_self"
+                  >
+                    <Button
+                      variant="outline-primary"
+                      style={{ fontWeight: "bold" }}
+                    >
+                      New Silica Report
+                    </Button>
+                  </a>
+                </div>
+              </Col>
+            </Row>
+          </Accordion.Body>
+        </Accordion.Item>
+        <Accordion.Item eventKey="4">
+          <Accordion.Header>
+            <div className="ms-2 me-auto" style={{ fontWeight: "bold" }}>
+              Demo Checklist
+            </div>
+            <span
+              className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
+              id="pill-HazardList"
+            >
+              {demoClReports?.length ?? 0}
+            </span>
+          </Accordion.Header>
+          <Accordion.Body>
+            <Row>
+              <Col>
+                <DemoChecklistTable jobNumber={job?.number} />
+              </Col>
+            </Row>
+            <Row>
+              <Col>
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "center",
+                    marginTop: "10px",
+                  }}
+                >
+                  <a
+                    href={`https://ckarlosdev.github.io/demo-checklist/index.html?jobNumber=${job?.number}&user=ckarlosTest`}
+                    target="_self"
+                  >
+                    <Button
+                      variant="outline-primary"
+                      style={{ fontWeight: "bold" }}
+                    >
+                      New Demo Checklist
+                    </Button>
+                  </a>
+                </div>
+              </Col>
+            </Row>
+          </Accordion.Body>
         </Accordion.Item>
       </Accordion>
     </>

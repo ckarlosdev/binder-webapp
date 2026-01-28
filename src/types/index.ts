@@ -43,3 +43,50 @@ export type DrGral = {
   toolsTotal: number;
   dumpstersCount: number;
 };
+
+export type HazardReport = {
+  preTasksId: number | null;
+  jobsId: number;
+  userName: string;
+  date: string;
+  supervisor: string;
+  comment: string;
+};
+
+export type SilicaReport = {
+  silicaId: number | null;
+  jobsId: number;
+  employeesId: number;
+  eventDate: string;
+};
+
+export type Employee = {
+  employeesId: number;
+  employeeNumber: string;
+  firstName: string;
+  lastName: string;
+  status: string;
+  title: string;
+};
+
+export type ChecklistReport = {
+  equipmentsGoogleChecklistsId: number;
+  jobsId: number;
+  total: number;
+  jobName: string;
+  date: string;
+  createdBy: string;
+  createdDate: string;
+  updatedBy: string;
+  updatedDate: string;
+  status: string;
+  token: string;
+};
+
+export type DemoChecklist = {
+  demoChecklistsId: number;
+  checklistDate: string;
+  buildingType: string;
+  foreman: string;
+  demoChecklistsStatus: string;
+};

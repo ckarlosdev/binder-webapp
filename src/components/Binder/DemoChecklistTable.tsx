@@ -1,48 +1,24 @@
-import { useEffect, useState } from "react";
 import { Button, Col, Row } from "react-bootstrap";
-import { getDrGralURL } from "../../hooks/urls";
-import useHttpsData from "../../hooks/useHttpsData";
-import type { DrGral } from "../../types";
-import { format } from "date-fns";
+import useDemoChecklist from "../../hooks/useDemoChecklists";
+import { useState } from "react";
 import "../../styles/tables.css";
 
-type Props = {
-  jobNumber?: string;
-  handlePill: (numReg: number) => void;
-};
+type Props = { jobNumber?: string };
 
-function DRTable({ jobNumber, handlePill }: Props) {
-  const [drDetail, setDrDetail] = useState<DrGral[]>();
+function DemoChecklistTable({ jobNumber }: Props) {
+  const { data: demoClReports, isLoading, error  } = useDemoChecklist(jobNumber ?? "");
   const [currentPage, setCurrentPage] = useState(1);
-
-  const { data: drData, search: searchDrs } = useHttpsData<DrGral[]>();
-
-  useEffect(() => {
-    if (jobNumber) {
-      const url = getDrGralURL(jobNumber);
-      searchDrs(url);
-    }
-  }, [jobNumber]);
-
-  useEffect(() => {
-    if (drData) {
-      const data = drData.sort(
-        (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime(),
-      );
-      handlePill(data.length);
-      setDrDetail(data);
-    }
-  }, [drData]);
 
   const itemsPerPage = 5;
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentItems = drDetail?.slice(indexOfFirstItem, indexOfLastItem);
-  const totalPages = Math.ceil((drDetail ?? []).length / itemsPerPage);
+  const currentItems = demoClReports?.slice(indexOfFirstItem, indexOfLastItem);
+  const totalPages = Math.ceil((demoClReports ?? []).length / itemsPerPage);
 
   const pageNumbersToShow = 5;
   let startPage = Math.max(1, currentPage - Math.floor(pageNumbersToShow / 2));
   let endPage = startPage + pageNumbersToShow - 1;
+
   if (endPage > totalPages) {
     endPage = totalPages;
     startPage = Math.max(1, endPage - pageNumbersToShow + 1);
@@ -58,17 +34,14 @@ function DRTable({ jobNumber, handlePill }: Props) {
     setCurrentPage(page);
   };
 
-  const getDateFormat = (dateString: string) => {
-    const parts = dateString.split("T")[0].split("-");
-    const year = parseInt(parts[0], 10);
-    const month = parseInt(parts[1], 10) - 1;
-    const day = parseInt(parts[2], 10);
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
 
-    const localDateObject = new Date(year, month, day);
+  if (error) {
+    return <div>Error loading Demo Checklist reports.</div>;
+  }
 
-    const formattedDate = format(localDateObject, "MM/dd/yyyy");
-    return formattedDate;
-  };
 
   return (
     <div className="custom-table-container table-responsive">
@@ -79,40 +52,31 @@ function DRTable({ jobNumber, handlePill }: Props) {
               <tr>
                 <th style={{ color: "#0c63e4" }}>Date</th>
                 <th style={{ color: "#0c63e4" }}>Foreman</th>
-                <th style={{ color: "#0c63e4" }}>Man Power</th>
-                <th style={{ color: "#0c63e4" }}>Equipment</th>
-                <th style={{ color: "#0c63e4" }}>Photos</th>
-                <th style={{ color: "#0c63e4" }}>Tools</th>
-                <th style={{ color: "#0c63e4" }}>Dumpsters</th>
-                <th style={{ color: "#0c63e4" }}>Action</th>
+                <th style={{ color: "#0c63e4" }}>Update</th>
               </tr>
             </thead>
             <tbody style={{ textAlign: "center" }}>
-              {currentItems?.map((item) => (
-                <tr key={item.dailyReportId}>
-                  <td>{getDateFormat(item.date)}</td>
-                  <td>{item.foreman}</td>
-                  <td>{item.manTotal}</td>
-                  <td>{item.equipmentTotal}</td>
-                  <td>{item.photosTotal}</td>
-                  <td>{item.toolsTotal}</td>
-                  <td>{item.dumpstersCount}</td>
-                  <td>
-                    <a
-                      // href={`https://www.youtube.com/${item.dailyReportId}`}
-                      href={`https://ckarlosdev.github.io/daily-report/#/?jobId=${jobNumber}&dailyReportId=${item.dailyReportId}`}
-                      target="_self"
-                    >
-                      <Button
-                        variant="outline-primary"
-                        style={{ fontWeight: "bold" }}
+              {currentItems?.map((report) => {
+                return (
+                  <tr key={report.demoChecklistsId}>
+                    <td>{new Date(report.checklistDate).toLocaleDateString()}</td>
+                    <td>{report.foreman}</td>
+                    <td>
+                      <a
+                        href={`https://ckarlosdev.github.io/demo-checklist/index.html?demoChecklistId=${report.demoChecklistsId}&user=testckarlos`}
+                        target="_self"
                       >
-                        Update
-                      </Button>
-                    </a>
-                  </td>
-                </tr>
-              ))}
+                        <Button
+                          variant="outline-primary"
+                          style={{ fontWeight: "bold" }}
+                        >
+                          Update
+                        </Button>
+                      </a>
+                    </td>
+                  </tr>
+                );
+              })}
             </tbody>
           </table>
         </Col>
@@ -176,4 +140,4 @@ function DRTable({ jobNumber, handlePill }: Props) {
   );
 }
 
-export default DRTable;
+export default DemoChecklistTable;

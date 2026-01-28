@@ -1,5 +1,7 @@
 export const API_BASE_URL = "https://api-gateway-px44.onrender.com/api/";
 
+// export const API_BASE_URL = "http://localhost:8082/api/";
+
 import axios from "axios";
 import { useAuthStore } from "../hooks/authStore";
 
@@ -36,7 +38,7 @@ api.interceptors.response.use(
           "https://api-gateway-px44.onrender.com/api/auth/refresh",
           {
             refreshToken: refreshTokenSaved,
-          }
+          },
         );
 
         const { token, refreshToken } = res.data;
@@ -53,5 +55,5 @@ api.interceptors.response.use(
       }
     }
     return Promise.reject(error);
-  }
+  },
 );

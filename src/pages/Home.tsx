@@ -2,10 +2,8 @@ import { Col, Container, Row } from "react-bootstrap";
 import Title from "../components/Title";
 import JobTable from "../components/JobsTable";
 import Search from "../components/Search";
-// import useHttpsData from "../hooks/useHttpsData";
 import type { Job } from "../types";
 import { useEffect, useState } from "react";
-// import { getJobsURL } from "../hooks/urls";
 import { useNavigate } from "react-router-dom";
 import useJob from "../hooks/useJobs";
 
@@ -18,12 +16,6 @@ function Home() {
   const [jobsFiltered, setJobsFiltered] = useState<Job[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [loadingBinder, setLoadingBinder] = useState(false);
-
-  // const {
-  //   data: jobData,
-  //   loading: loadingJobs,
-  //   search: searchJobs,
-  // } = useHttpsData<Job[]>();
 
   const itemsPerPage = 9;
   const indexOfLastItem = currentPage * itemsPerPage;

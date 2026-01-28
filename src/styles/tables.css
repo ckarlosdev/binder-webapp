@@ -1,0 +1,75 @@
+/* Contenedor general para evitar que rompa el acordeón */
+.custom-table-container {
+  width: 100%;
+  overflow-x: auto;
+  padding-bottom: 5px;
+  -webkit-overflow-scrolling: touch; /* Suavidad en iPad */
+  border: none;
+}
+
+/* Ajustes específicos para iPads y tablets (Pantallas menores a 992px) */
+@media (max-width: 991px) {
+  .custom-table-container table {
+    font-size: 0.8rem; /* Reducimos el tamaño de la letra */
+  }
+
+  .custom-table-container th,
+  .custom-table-container td {
+    padding: 8px 4px !important; /* Reducimos el espacio interno de las celdas */
+    white-space: nowrap; /* Evita que el texto salte de línea y haga la fila gigante */
+  }
+
+  /* Si el botón "Update" es muy grande, lo ajustamos */
+  .custom-table-container .btn {
+    padding: 0.2rem 0.4rem;
+    font-size: 0.75rem;
+  }
+}
+
+/* Técnica de ocultamiento selectivo (Opcional pero muy recomendada) */
+@media (max-width: 768px) {
+  /* En pantallas muy pequeñas (iPhone o iPad vertical), ocultamos columnas menos críticas 
+     para que no haya que hacer tanto scroll lateral */
+
+  /* Ejemplo: ocultar "Tools" y "Dumpsters" en pantallas pequeñas */
+  .custom-table-container th:nth-child(6),
+  .custom-table-container td:nth-child(6),
+  .custom-table-container th:nth-child(7),
+  .custom-table-container td:nth-child(7) {
+    display: none;
+  }
+}
+
+.table-responsive {
+  background-image:
+    linear-gradient(to right, white, white),
+    linear-gradient(to right, white, white),
+    linear-gradient(to right, rgba(0, 0, 0, 0.1), rgba(255, 255, 255, 0)),
+    linear-gradient(to left, rgba(0, 0, 0, 0.1), rgba(255, 255, 255, 0));
+  background-position:
+    left center,
+    right center,
+    left center,
+    right center;
+  background-repeat: no-repeat;
+  background-color: white;
+  background-size:
+    20px 100%,
+    20px 100%,
+    10px 100%,
+    10px 100%;
+  background-attachment: local, local, scroll, scroll;
+}
+
+.table-responsive::-webkit-scrollbar {
+  height: 4px; /* Barra muy delgada */
+}
+
+.table-responsive::-webkit-scrollbar-thumb {
+  background: #0c63e4; /* Color de tu tema */
+  border-radius: 10px;
+}
+
+.table-responsive::-webkit-scrollbar-track {
+  background: transparent; /* No muestra pista si no hay scroll */
+}

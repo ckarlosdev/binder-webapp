@@ -1,6 +1,8 @@
 // const base = "https://checklist-api-8j62.onrender.com/api/v1";
 
-const base = "https://api-gateway-px44.onrender.com/api/v1";
+// const base = "https://api-gateway-px44.onrender.com/api/v1";
+
+const base = "http://localhost:8082/api/v1";
 
 export const getJobsURL = () => `${base}/job`;
 export const getJobByIdURL = (jobId: string) => `${base}/job/${jobId}`;
