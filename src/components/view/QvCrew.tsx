@@ -8,10 +8,10 @@ type Props = {};
 
 function QvCrew({}: Props) {
   const { showModal, setShow, dailyReportId } = useQViewStore();
-    const { data: employeesData } = useEmployees();
+  const { data: employeesData } = useEmployees();
 
   const { data: drData, isLoading } = useDailyReportData(
-    dailyReportId as number, 
+    dailyReportId as number,
     {
       enabled: dailyReportId !== null,
     },
@@ -21,9 +21,13 @@ function QvCrew({}: Props) {
     return <div>Cargando reporte...</div>;
   }
 
+  if (!drData) {
+    return <p>Cargando datos...</p>;
+  }
+
   const handleGetName = (employeeId: number) => {
     const employee = employeesData?.find(
-      (employee) => employee.employeesId === employeeId
+      (employee) => employee.employeesId === employeeId,
     );
     return employee?.firstName + " " + employee?.lastName;
   };
@@ -37,9 +41,7 @@ function QvCrew({}: Props) {
         aria-labelledby="example-modal-sizes-title-lg"
       >
         <Modal.Header closeButton>
-          <Modal.Title className="w-100 text-center">
-            Crew
-          </Modal.Title>
+          <Modal.Title className="w-100 text-center">Crew</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <div>
@@ -52,7 +54,7 @@ function QvCrew({}: Props) {
                     overflowX: "auto",
                   }}
                 >
-                  <Table striped bordered hover  className="w-100 text-center">
+                  <Table striped bordered hover className="w-100 text-center">
                     <thead>
                       <tr>
                         <th>Name</th>
@@ -64,7 +66,7 @@ function QvCrew({}: Props) {
                       </tr>
                     </thead>
                     <tbody>
-                      {drData.employees.map((assignment) => (
+                      {drData?.employees?.map((assignment) => (
                         <tr
                           key={assignment.employeesId}
                           style={{ verticalAlign: "middle" }}
