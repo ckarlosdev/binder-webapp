@@ -1,28 +1,24 @@
 import { useEffect, useState } from "react";
 import { Button, Col, Row } from "react-bootstrap";
-import { getDrGralURL } from "../../hooks/urls";
-import useHttpsData from "../../hooks/useHttpsData";
 import type { DrGral } from "../../types";
 import { format } from "date-fns";
 import "../../styles/tables.css";
+import { useDailyReport } from "../../hooks/useDailyReports";
+import { useQViewStore } from "../../stores/useQViewStore";
+import { useAuthStore } from "../../hooks/authStore";
 
 type Props = {
   jobNumber?: string;
+  jobId?: number;
   handlePill: (numReg: number) => void;
 };
 
-function DRTable({ jobNumber, handlePill }: Props) {
+function DRTable({ jobNumber, jobId, handlePill }: Props) {
   const [drDetail, setDrDetail] = useState<DrGral[]>();
+  const { user: userAuth } = useAuthStore();
   const [currentPage, setCurrentPage] = useState(1);
-
-  const { data: drData, search: searchDrs } = useHttpsData<DrGral[]>();
-
-  useEffect(() => {
-    if (jobNumber) {
-      const url = getDrGralURL(jobNumber);
-      searchDrs(url);
-    }
-  }, [jobNumber]);
+  const { data: drData } = useDailyReport(jobNumber ?? "");
+  const { setShow, setDrId } = useQViewStore();
 
   useEffect(() => {
     if (drData) {
@@ -70,6 +66,11 @@ function DRTable({ jobNumber, handlePill }: Props) {
     return formattedDate;
   };
 
+  const isAuthorized = userAuth?.roles?.some(
+    (role) =>
+      role.name === "ROLE_SUPERVISOR" || role.name === "ROLE_SUPERINTENDENT",
+  );
+
   return (
     <div className="custom-table-container table-responsive">
       <Row>
@@ -92,22 +93,40 @@ function DRTable({ jobNumber, handlePill }: Props) {
                 <tr key={item.dailyReportId}>
                   <td>{getDateFormat(item.date)}</td>
                   <td>{item.foreman}</td>
-                  <td>{item.manTotal}</td>
+                  <td>
+                    <Button
+                      variant="outline-primary"
+                      onClick={() => {
+                        setDrId(item.dailyReportId);
+                        setShow(true);
+                      }}
+                    >
+                      {item.manTotal}
+                    </Button>
+                  </td>
                   <td>{item.equipmentTotal}</td>
-                  <td>{item.photosTotal}</td>
+                  <td>
+                    <Button
+                      variant="outline-primary"
+                      as="a"
+                      href={`https://script.google.com/a/macros/hmbrandt.com/s/AKfycbzUG6YZDJzpaSTxIuf8xwPe9Bu3KsVeXhgwszMQAe_ZZfNOodySAD1GB14ODUMJ-eCL/exec?jobNumber=${jobNumber}&reportType=DailyReport&date=${item.date}&drId=${item.dailyReportId}`}
+                      target="_self"
+                    >
+                      {item.photosTotal}
+                    </Button>
+                  </td>
                   <td>{item.toolsTotal}</td>
                   <td>{item.dumpstersCount}</td>
                   <td>
                     <a
-                      // href={`https://www.youtube.com/${item.dailyReportId}`}
-                      href={`https://ckarlosdev.github.io/daily-report/#/?jobId=${jobNumber}&dailyReportId=${item.dailyReportId}`}
+                      href={`https://ckarlosdev.github.io/daily-report/#/?jobId=${jobId}&dailyReportId=${item.dailyReportId}`}
                       target="_self"
                     >
                       <Button
                         variant="outline-primary"
                         style={{ fontWeight: "bold" }}
                       >
-                        Update
+                        {isAuthorized ? "Update" : "View"}
                       </Button>
                     </a>
                   </td>

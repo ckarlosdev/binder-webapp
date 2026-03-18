@@ -2,13 +2,13 @@
 
 // const base = "https://api-gateway-px44.onrender.com/api/v1";
 
-const base = "http://localhost:8082/api/v1";
+// const base = "http://localhost:8082/api/v1";
 
-export const getJobsURL = () => `${base}/job`;
-export const getJobByIdURL = (jobId: string) => `${base}/job/${jobId}`;
+// export const getJobsURL = () => `${base}/job`;
+// export const getJobByIdURL = (jobId: string) => `${base}/job/${jobId}`;
 
-export const getDrByJobNumberURL = (jobNumber: string) =>
-  `${base}/dailyReport/job/${jobNumber}`;
+// export const getDrByJobNumberURL = (jobNumber: string) =>
+//   `${base}/dailyReport/job/${jobNumber}`;
 
-export const getDrGralURL = (jobNumber: string) =>
-  `${base}/dailyReport/gral/${jobNumber}`;
+// export const getDrGralURL = (jobNumber: string) =>
+//   `${base}/dailyReport/gral/${jobNumber}`;

@@ -2,12 +2,19 @@ import { Button, Col, Row } from "react-bootstrap";
 import useDemoChecklist from "../../hooks/useDemoChecklists";
 import { useState } from "react";
 import "../../styles/tables.css";
+import { format } from "date-fns";
+import { useAuthStore } from "../../hooks/authStore";
 
-type Props = { jobNumber?: string };
+type Props = { jobNumber?: string; jobId?: number };
 
-function DemoChecklistTable({ jobNumber }: Props) {
-  const { data: demoClReports, isLoading, error  } = useDemoChecklist(jobNumber ?? "");
+function DemoChecklistTable({ jobNumber, jobId }: Props) {
+  const {
+    data: demoClReports,
+    isLoading,
+    error,
+  } = useDemoChecklist(jobNumber ?? "");
   const [currentPage, setCurrentPage] = useState(1);
+  const { user: userAuth } = useAuthStore();
 
   const itemsPerPage = 5;
   const indexOfLastItem = currentPage * itemsPerPage;
@@ -34,6 +41,18 @@ function DemoChecklistTable({ jobNumber }: Props) {
     setCurrentPage(page);
   };
 
+  const getDateFormat = (dateString: string) => {
+    const parts = dateString.split("T")[0].split("-");
+    const year = parseInt(parts[0], 10);
+    const month = parseInt(parts[1], 10) - 1;
+    const day = parseInt(parts[2], 10);
+
+    const localDateObject = new Date(year, month, day);
+
+    const formattedDate = format(localDateObject, "MM/dd/yyyy");
+    return formattedDate;
+  };
+
   if (isLoading) {
     return <div>Loading...</div>;
   }
@@ -42,6 +61,10 @@ function DemoChecklistTable({ jobNumber }: Props) {
     return <div>Error loading Demo Checklist reports.</div>;
   }
 
+  const isAuthorized = userAuth?.roles?.some(
+    (role) =>
+      role.name === "ROLE_SUPERVISOR" || role.name === "ROLE_SUPERINTENDENT",
+  );
 
   return (
     <div className="custom-table-container table-responsive">
@@ -52,6 +75,7 @@ function DemoChecklistTable({ jobNumber }: Props) {
               <tr>
                 <th style={{ color: "#0c63e4" }}>Date</th>
                 <th style={{ color: "#0c63e4" }}>Foreman</th>
+                <th style={{ color: "#0c63e4" }}>Photos</th>
                 <th style={{ color: "#0c63e4" }}>Update</th>
               </tr>
             </thead>
@@ -59,18 +83,39 @@ function DemoChecklistTable({ jobNumber }: Props) {
               {currentItems?.map((report) => {
                 return (
                   <tr key={report.demoChecklistsId}>
-                    <td>{new Date(report.checklistDate).toLocaleDateString()}</td>
+                    <td>{getDateFormat(report.checklistDate)}</td>
                     <td>{report.foreman}</td>
                     <td>
+                      <Button
+                        variant="outline-primary"
+                        as="a"
+                        style={{ fontWeight: "bold" }}
+                        href={`https://script.google.com/a/macros/hmbrandt.com/s/AKfycbzUG6YZDJzpaSTxIuf8xwPe9Bu3KsVeXhgwszMQAe_ZZfNOodySAD1GB14ODUMJ-eCL/exec?jobNumber=${jobNumber}&reportType=Before-Demo&date=${report.checklistDate}&drId=${report.demoChecklistsId}`}
+                        target="_self"
+                      >
+                        {"Before"}
+                      </Button>
+                      {" "}
+                      <Button
+                        variant="outline-primary"
+                        as="a"
+                        style={{ fontWeight: "bold" }}
+                        href={`https://script.google.com/a/macros/hmbrandt.com/s/AKfycbzUG6YZDJzpaSTxIuf8xwPe9Bu3KsVeXhgwszMQAe_ZZfNOodySAD1GB14ODUMJ-eCL/exec?jobNumber=${jobNumber}&reportType=After-Demo&date=${report.checklistDate}&drId=${report.demoChecklistsId}`}
+                        target="_self"
+                      >
+                        {"After"}
+                      </Button>
+                    </td>
+                    <td>
                       <a
-                        href={`https://ckarlosdev.github.io/demo-checklist/index.html?demoChecklistId=${report.demoChecklistsId}&user=testckarlos`}
+                        href={`https://ckarlosdev.github.io/demo-checklist-report/#/?jobId=${jobId}&demoChecklistId=${report.demoChecklistsId}`}
                         target="_self"
                       >
                         <Button
                           variant="outline-primary"
                           style={{ fontWeight: "bold" }}
                         >
-                          Update
+                          {isAuthorized ? "Update" : "View"}
                         </Button>
                       </a>
                     </td>

@@ -4,10 +4,9 @@ import Title from "../Title";
 import Sections from "./Sections";
 import CardJob from "./CardJob";
 import { useEffect, useState } from "react";
-// import useHttpsData from "../../hooks/useHttpsData";
 import type { Job } from "../../types";
 import useJob from "../../hooks/useJobs";
-// import { getJobByIdURL } from "../../hooks/urls";
+import QvCrew from "../view/QvCrew";
 
 type Props = {};
 
@@ -64,6 +63,7 @@ function index({}: Props) {
           </Col>
         </Row>
       </Container>
+      <QvCrew />
     </>
   );
 }

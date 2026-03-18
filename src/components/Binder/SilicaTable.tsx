@@ -3,6 +3,8 @@ import useSilica from "../../hooks/useSilica";
 import { useState } from "react";
 import useEmployees from "../../hooks/useEmployees";
 import "../../styles/tables.css";
+import { format } from "date-fns";
+import { useAuthStore } from "../../hooks/authStore";
 
 type Props = {
   jobId?: number;
@@ -12,6 +14,7 @@ function SilicaTable({ jobId }: Props) {
   const { data: silicaReports, isLoading, error } = useSilica(jobId ?? 0);
   const { data: employees } = useEmployees();
   const [currentPage, setCurrentPage] = useState(1);
+  const { user: userAuth } = useAuthStore();
 
   const itemsPerPage = 5;
   const indexOfLastItem = currentPage * itemsPerPage;
@@ -33,6 +36,18 @@ function SilicaTable({ jobId }: Props) {
     pages.push(i);
   }
 
+  const getDateFormat = (dateString: string) => {
+    const parts = dateString.split("T")[0].split("-");
+    const year = parseInt(parts[0], 10);
+    const month = parseInt(parts[1], 10) - 1;
+    const day = parseInt(parts[2], 10);
+
+    const localDateObject = new Date(year, month, day);
+
+    const formattedDate = format(localDateObject, "MM/dd/yyyy");
+    return formattedDate;
+  };
+
   const handlePageChange = (page: number) => {
     if (page < 1 || page > totalPages) return;
     setCurrentPage(page);
@@ -45,6 +60,11 @@ function SilicaTable({ jobId }: Props) {
   if (error) {
     return <div>Error loading silica reports.</div>;
   }
+
+  const isAuthorized = userAuth?.roles?.some(
+    (role) =>
+      role.name === "ROLE_SUPERVISOR" || role.name === "ROLE_SUPERINTENDENT",
+  );
 
   return (
     <div className="custom-table-container table-responsive">
@@ -66,7 +86,7 @@ function SilicaTable({ jobId }: Props) {
 
                 return (
                   <tr key={report.silicaId}>
-                    <td>{new Date(report.eventDate).toLocaleDateString()}</td>
+                    <td>{getDateFormat(report.eventDate)}</td>
                     <td>
                       {foreman
                         ? foreman.firstName + " " + foreman.lastName
@@ -74,14 +94,14 @@ function SilicaTable({ jobId }: Props) {
                     </td>
                     <td>
                       <a
-                        href={`https://ckarlosdev.github.io/silica-report/index.html?silicaId=${report.silicaId}`}
+                        href={`https://ckarlosdev.github.io/silica-report-project/#/?jobId=${jobId}&silicaId=${report.silicaId}`}
                         target="_self"
                       >
                         <Button
                           variant="outline-primary"
                           style={{ fontWeight: "bold" }}
                         >
-                          Update
+                          {isAuthorized ? "Update" : "View"}
                         </Button>
                       </a>
                     </td>

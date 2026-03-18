@@ -26,6 +26,36 @@ function Sections({ job }: Props) {
     setPillDr(num);
   };
 
+  const handleDrStorage = () => {
+    localStorage.removeItem("daily-report-storage");
+    localStorage.removeItem("dumpsters-storage");
+    localStorage.removeItem("equipments-storage");
+    localStorage.removeItem("manpower-storage");
+    localStorage.removeItem("rentals-storage");
+    localStorage.removeItem("tools-storage");
+  };
+
+  const handleHazardClearStorage = () => {
+    localStorage.removeItem("activity-storage");
+    localStorage.removeItem("hazard-report-storage");
+    localStorage.removeItem("hazard-options-storage");
+    localStorage.removeItem("signatures-storage");
+  };
+
+  const handleEquipmentClClearStorage = () => {
+    localStorage.removeItem("checklist-storage");
+    localStorage.removeItem("equipmentCl-storage");
+    localStorage.removeItem("qrChecklists-storage");
+  };
+
+  const handleSilicaClearStorage = () => {
+    localStorage.removeItem("silica-report-storage");
+  };
+
+  const handleDemoClearStorage = () => {
+    localStorage.removeItem("demo-checklist-storage");
+  };
+
   return (
     <>
       <Accordion alwaysOpen>
@@ -49,7 +79,11 @@ function Sections({ job }: Props) {
           <Accordion.Body>
             <Row>
               <Col>
-                <DRTable jobNumber={job?.number} handlePill={handlePill} />
+                <DRTable
+                  jobNumber={job?.number}
+                  jobId={job?.jobsId}
+                  handlePill={handlePill}
+                />
               </Col>
             </Row>
             <Row>
@@ -61,17 +95,16 @@ function Sections({ job }: Props) {
                     marginTop: "10px",
                   }}
                 >
-                  <a
-                    href={`https://ckarlosdev.github.io/daily-report/#/?jobId=${job?.jobsId}`}
-                    target="_self"
+                  <Button
+                    variant="outline-primary"
+                    style={{ fontWeight: "bold" }}
+                    onClick={() => {
+                      handleDrStorage();
+                      window.location.href = `https://ckarlosdev.github.io/daily-report/#/?jobId=${job?.jobsId}&action=new`;
+                    }}
                   >
-                    <Button
-                      variant="outline-primary"
-                      style={{ fontWeight: "bold" }}
-                    >
-                      New Daily Report
-                    </Button>
-                  </a>
+                    New Daily Report
+                  </Button>
                 </div>
               </Col>
             </Row>
@@ -104,17 +137,16 @@ function Sections({ job }: Props) {
                     marginTop: "10px",
                   }}
                 >
-                  <a
-                    href={`https://ckarlosdev.github.io/hazard-report/?jobId=${job?.jobsId}`}
-                    target="_self"
+                  <Button
+                    variant="outline-primary"
+                    style={{ fontWeight: "bold" }}
+                    onClick={() => {
+                      handleHazardClearStorage();
+                      window.location.href = `https://ckarlosdev.github.io/hazard-report/?jobId=${job?.jobsId}&action=new`;
+                    }}
                   >
-                    <Button
-                      variant="outline-primary"
-                      style={{ fontWeight: "bold" }}
-                    >
-                      New Hazard Report
-                    </Button>
-                  </a>
+                    New Hazard Report
+                  </Button>
                 </div>
               </Col>
             </Row>
@@ -147,17 +179,16 @@ function Sections({ job }: Props) {
                     marginTop: "10px",
                   }}
                 >
-                  <a
-                    href={`https://ckarlosdev.github.io/checklist-report/#/?jobId=${job?.number}`}
-                    target="_self"
+                  <Button
+                    variant="outline-primary"
+                    style={{ fontWeight: "bold" }}
+                    onClick={() => {
+                      handleEquipmentClClearStorage();
+                      window.location.href = `https://ckarlosdev.github.io/checklist-report/#/?jobId=${job?.jobsId}&action=new`;
+                    }}
                   >
-                    <Button
-                      variant="outline-primary"
-                      style={{ fontWeight: "bold" }}
-                    >
-                      New checklist Report
-                    </Button>
-                  </a>
+                    New checklist Report
+                  </Button>
                 </div>
               </Col>
             </Row>
@@ -190,17 +221,16 @@ function Sections({ job }: Props) {
                     marginTop: "10px",
                   }}
                 >
-                  <a
-                    href={`https://ckarlosdev.github.io/silica-report/index.html?jobNumber=${job?.number}`}
-                    target="_self"
+                  <Button
+                    variant="outline-primary"
+                    style={{ fontWeight: "bold" }}
+                    onClick={() => {
+                      handleSilicaClearStorage();
+                      window.location.href = `https://ckarlosdev.github.io/silica-report-project/#/?jobId=${job?.jobsId}&action=new`;
+                    }}
                   >
-                    <Button
-                      variant="outline-primary"
-                      style={{ fontWeight: "bold" }}
-                    >
-                      New Silica Report
-                    </Button>
-                  </a>
+                    New Silica Report
+                  </Button>
                 </div>
               </Col>
             </Row>
@@ -221,7 +251,10 @@ function Sections({ job }: Props) {
           <Accordion.Body>
             <Row>
               <Col>
-                <DemoChecklistTable jobNumber={job?.number} />
+                <DemoChecklistTable
+                  jobNumber={job?.number}
+                  jobId={job?.jobsId}
+                />
               </Col>
             </Row>
             <Row>
@@ -233,17 +266,16 @@ function Sections({ job }: Props) {
                     marginTop: "10px",
                   }}
                 >
-                  <a
-                    href={`https://ckarlosdev.github.io/demo-checklist/index.html?jobNumber=${job?.number}&user=ckarlosTest`}
-                    target="_self"
+                  <Button
+                    variant="outline-primary"
+                    style={{ fontWeight: "bold" }}
+                    onClick={() => {
+                      handleDemoClearStorage();
+                      window.location.href = `https://ckarlosdev.github.io/demo-checklist-report/#/?jobId=${job?.jobsId}&action=new`;
+                    }}
                   >
-                    <Button
-                      variant="outline-primary"
-                      style={{ fontWeight: "bold" }}
-                    >
-                      New Demo Checklist
-                    </Button>
-                  </a>
+                    New Demo Checklist
+                  </Button>
                 </div>
               </Col>
             </Row>

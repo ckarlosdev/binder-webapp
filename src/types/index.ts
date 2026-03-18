@@ -33,6 +33,22 @@ export type DailyReport = {
   status: string;
 };
 
+export type DailyReportView = {
+  dailyReportId: number | null;
+  date: string;
+  foreman?: string;
+  userName?: string;
+  description: string;
+  manOther: string;
+  equipmentOther: string;
+  issues: string;
+  employees: DREmployee[];
+  equipments: DREquipment[];
+  rentals: DRRental[];
+  tools: DRTool[];
+  dumpsters: DrDumpster[];
+};
+
 export type DrGral = {
   dailyReportId: number;
   date: string;
@@ -89,4 +105,67 @@ export type DemoChecklist = {
   buildingType: string;
   foreman: string;
   demoChecklistsStatus: string;
+};
+
+export type AuthUser = {
+  email: string;
+  fullName: string;
+  id: string;
+  roles: Role[];
+};
+
+export type Role = {
+    id: number;
+    name: string;
+}
+
+export type DREmployee = {
+  drEmployeesId?: number | null;
+  dailyReportId: number | null;
+  employeesId: number | null;
+  inHour: string;
+  outHour: string;
+  lunch: boolean;
+  ppe: boolean;
+  comment: string;
+};
+
+export type DREquipment = {
+  drEquipmentsId: number | null;
+  dailyReportId: number | null;
+  equipmentsId: number;
+  employeesId: number | null;
+  type: string;
+  initialHour: string;
+  newHour: string;
+};
+
+export type DRRental = {
+  temporalId: string;
+  drRentalsId: number | null;
+  dailyReportId: number | null;
+  employeesId: number | null;
+  equipmentType: string;
+  equipmentName: string;
+  company: string;
+  equipmentNumber: string;
+  odometer: number;
+};
+
+export type DRTool = {
+  temporalId: string;
+  drToolId: number | null;
+  dailyReportId: number | null;
+  qty: number | "";
+  name: string;
+  other: string;
+  comments: string;
+};
+
+export type DrDumpster = {
+  drDumpstersId: number | null;
+  sourceDumpster: string;
+  sizeDumpster: string;
+  typeDumpster: String;
+  quantity: number | 0;
 };

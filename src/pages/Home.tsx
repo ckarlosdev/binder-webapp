@@ -68,22 +68,10 @@ function Home() {
     setLoadingBinder(false);
   };
 
-  // useEffect(() => {
-  //   const tokenGuardado = localStorage.getItem("auth_token");
-  //   if (tokenGuardado) {
-  //     console.log("Token found");
-  //     const urlJobs = getJobsURL();
-  //     searchJobs(urlJobs);
-  //   } else {
-  //     console.log("Not token found");
-  //     window.location.href = "https://ckarlosdev.github.io/login/";
-  //   }
-  // }, []);
-
   useEffect(() => {
     if (jobData) {
       const jobsSorted = jobData.sort((a, b) =>
-        b.number.localeCompare(a.number)
+        b.number.localeCompare(a.number),
       );
       setJobsDetail(jobsSorted);
       setJobsFiltered(jobsSorted);

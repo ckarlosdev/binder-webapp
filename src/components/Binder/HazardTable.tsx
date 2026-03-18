@@ -2,6 +2,8 @@ import { Button, Col, Row } from "react-bootstrap";
 import useHazards from "../../hooks/useHazards";
 import { useState } from "react";
 import "../../styles/tables.css";
+import { format } from "date-fns";
+import { useAuthStore } from "../../hooks/authStore";
 
 type Props = {
   jobId?: number;
@@ -10,6 +12,7 @@ type Props = {
 function HazardTable({ jobId }: Props) {
   const { data: hazards, isLoading, error } = useHazards(jobId ?? 0);
   const [currentPage, setCurrentPage] = useState(1);
+  const { user: userAuth } = useAuthStore();
 
   const itemsPerPage = 5;
   const indexOfLastItem = currentPage * itemsPerPage;
@@ -36,6 +39,18 @@ function HazardTable({ jobId }: Props) {
     setCurrentPage(page);
   };
 
+  const getDateFormat = (dateString: string) => {
+    const parts = dateString.split("T")[0].split("-");
+    const year = parseInt(parts[0], 10);
+    const month = parseInt(parts[1], 10) - 1;
+    const day = parseInt(parts[2], 10);
+
+    const localDateObject = new Date(year, month, day);
+
+    const formattedDate = format(localDateObject, "MM/dd/yyyy");
+    return formattedDate;
+  };
+
   if (isLoading) {
     return <div>Loading...</div>;
   }
@@ -43,6 +58,11 @@ function HazardTable({ jobId }: Props) {
   if (error) {
     return <div>Error loading hazard reports.</div>;
   }
+
+  const isAuthorized = userAuth?.roles?.some(
+    (role) =>
+      role.name === "ROLE_SUPERVISOR" || role.name === "ROLE_SUPERINTENDENT",
+  );
 
   return (
     <div className="custom-table-container table-responsive">
@@ -59,7 +79,7 @@ function HazardTable({ jobId }: Props) {
             <tbody style={{ textAlign: "center" }}>
               {currentItems?.map((hazard) => (
                 <tr key={hazard.preTasksId}>
-                  <td>{new Date(hazard.date).toLocaleDateString()}</td>
+                  <td>{getDateFormat(hazard.date)}</td>
                   <td>{hazard.supervisor}</td>
                   <td>
                     <a
@@ -70,7 +90,7 @@ function HazardTable({ jobId }: Props) {
                         variant="outline-primary"
                         style={{ fontWeight: "bold" }}
                       >
-                        Update
+                        {isAuthorized ? "Update" : "View"}
                       </Button>
                     </a>
                   </td>
