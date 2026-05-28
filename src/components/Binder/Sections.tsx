@@ -10,6 +10,8 @@ import useChecklist from "../../hooks/useChecklists";
 import ChecklistTable from "./ChecklistTable";
 import DemoChecklistTable from "./DemoChecklistTable";
 import useDemoChecklist from "../../hooks/useDemoChecklists";
+import useChangeOrder from "../../hooks/useChangeOrder";
+import ChangeOrderTable from "./ChangeOrderTable";
 
 type Props = {
   job?: Job;
@@ -21,6 +23,7 @@ function Sections({ job }: Props) {
   const { data: silicaReports } = useSilica(job?.jobsId ?? 0);
   const { data: checkListReports } = useChecklist(job?.jobsId ?? 0);
   const { data: demoClReports } = useDemoChecklist(job?.number ?? "");
+  const { data: changeOrders } = useChangeOrder(job?.jobsId!!);
 
   const handlePill = (num: number) => {
     setPillDr(num);
@@ -275,6 +278,48 @@ function Sections({ job }: Props) {
                     }}
                   >
                     New Demo Checklist
+                  </Button>
+                </div>
+              </Col>
+            </Row>
+          </Accordion.Body>
+        </Accordion.Item>
+        <Accordion.Item eventKey="5">
+          <Accordion.Header>
+            <div className="ms-2 me-auto" style={{ fontWeight: "bold" }}>
+              Change Orders
+            </div>
+            <span
+              className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
+              id="pill-HazardList"
+            >
+              {changeOrders?.length ?? 0}
+            </span>
+          </Accordion.Header>
+          <Accordion.Body>
+            <Row>
+              <Col>
+                <ChangeOrderTable jobNumber={job?.number} jobId={job?.jobsId} />
+              </Col>
+            </Row>
+            <Row>
+              <Col>
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "center",
+                    marginTop: "10px",
+                  }}
+                >
+                  <Button
+                    variant="outline-primary"
+                    style={{ fontWeight: "bold" }}
+                    onClick={() => {
+                      handleDemoClearStorage();
+                      window.location.href = `https://ckarlosdev.github.io/change-order/?jobId=${job?.jobsId}&action=new`;
+                    }}
+                  >
+                    New Change Order
                   </Button>
                 </div>
               </Col>

@@ -10,7 +10,11 @@ export const calculateHoursDifference = (
   };
 
   const totalMinutesIn = timeToMinutes(inHour);
-  const totalMinutesOut = timeToMinutes(outHour);
+  let totalMinutesOut = timeToMinutes(outHour);
+
+  if (totalMinutesOut < totalMinutesIn) {
+    totalMinutesOut += 24 * 60;
+  }
 
   // 2. Calcular la diferencia en minutos
   const differenceInMinutes =

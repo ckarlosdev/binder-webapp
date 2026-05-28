@@ -27,7 +27,7 @@ function CardJob({ job }: Props) {
               fontSize: "20px",
             }}
           >
-            JobSelected
+            Job Selected
           </CardTitle>
           <Container>
             <Row>

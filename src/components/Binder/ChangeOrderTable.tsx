@@ -1,44 +1,41 @@
-import { useEffect, useState } from "react";
 import { Button, Col, Row } from "react-bootstrap";
-import type { DrGral } from "../../types";
-import { format } from "date-fns";
-import "../../styles/tables.css";
-import { useDailyReport } from "../../hooks/useDailyReports";
-import { useQViewStore } from "../../stores/useQViewStore";
+import useChangeOrder from "../../hooks/useChangeOrder";
 import { useAuthStore } from "../../hooks/authStore";
+import { useEffect, useState } from "react";
+import { format } from "date-fns";
+import { MdOutlineAddAPhoto } from "react-icons/md";
+import type { ChangeOrder } from "../../types";
+import useEmployees from "../../hooks/useEmployees";
 
-type Props = {
-  jobNumber?: string;
-  jobId?: number;
-  handlePill: (numReg: number) => void;
-};
+type Props = { jobNumber?: string; jobId?: number };
 
-function DRTable({ jobNumber, jobId, handlePill }: Props) {
-  const [drDetail, setDrDetail] = useState<DrGral[]>();
-  const { user: userAuth } = useAuthStore();
+function ChangeOrderTable({ jobNumber, jobId }: Props) {
+  const [ordersDetail, setOrdersDetail] = useState<ChangeOrder[]>();
+  const { data: changeOrders, isLoading, error } = useChangeOrder(jobId!!);
+  const { data: employees } = useEmployees();
   const [currentPage, setCurrentPage] = useState(1);
-  const { data: drData } = useDailyReport(jobNumber ?? "");
-  const { setShow, setDrId } = useQViewStore();
-
-  useEffect(() => {
-    if (drData) {
-      const data = drData.sort(
-        (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime(),
-      );
-      handlePill(data.length);
-      setDrDetail(data);
-    }
-  }, [drData]);
+  const { user: userAuth } = useAuthStore();
 
   const itemsPerPage = 5;
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentItems = drDetail?.slice(indexOfFirstItem, indexOfLastItem);
-  const totalPages = Math.ceil((drDetail ?? []).length / itemsPerPage);
+  const currentItems = ordersDetail?.slice(indexOfFirstItem, indexOfLastItem);
+  const totalPages = Math.ceil((ordersDetail ?? []).length / itemsPerPage);
+
+  useEffect(() => {
+    if (changeOrders) {
+      const data = changeOrders.sort(
+        (a, b) =>
+          new Date(b.orderDate).getTime() - new Date(a.orderDate).getTime(),
+      );
+      setOrdersDetail(data);
+    }
+  }, [changeOrders]);
 
   const pageNumbersToShow = 5;
   let startPage = Math.max(1, currentPage - Math.floor(pageNumbersToShow / 2));
   let endPage = startPage + pageNumbersToShow - 1;
+
   if (endPage > totalPages) {
     endPage = totalPages;
     startPage = Math.max(1, endPage - pageNumbersToShow + 1);
@@ -66,6 +63,14 @@ function DRTable({ jobNumber, jobId, handlePill }: Props) {
     return formattedDate;
   };
 
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+
+  if (error) {
+    return <div>Error loading Demo Checklist reports.</div>;
+  }
+
   const isAuthorized = userAuth?.roles?.some(
     (role) =>
       role.name === "ROLE_SUPERVISOR" || role.name === "ROLE_SUPERINTENDENT",
@@ -80,58 +85,49 @@ function DRTable({ jobNumber, jobId, handlePill }: Props) {
               <tr>
                 <th style={{ color: "#0c63e4" }}>Date</th>
                 <th style={{ color: "#0c63e4" }}>Foreman</th>
-                <th style={{ color: "#0c63e4" }}>Man Power</th>
-                <th style={{ color: "#0c63e4" }}>Equipment</th>
                 <th style={{ color: "#0c63e4" }}>Photos</th>
-                <th style={{ color: "#0c63e4" }}>Tools</th>
-                <th style={{ color: "#0c63e4" }}>Dumpsters</th>
-                <th style={{ color: "#0c63e4" }}>Action</th>
+                <th style={{ color: "#0c63e4" }}>Update</th>
               </tr>
             </thead>
             <tbody style={{ textAlign: "center" }}>
-              {currentItems?.map((item) => (
-                <tr key={item.dailyReportId}>
-                  <td>{getDateFormat(item.date)}</td>
-                  <td>{item.foreman}</td>
-                  <td>
-                    <Button
-                      variant="outline-primary"
-                      onClick={() => {
-                        setDrId(item.dailyReportId);
-                        setShow(true);
-                      }}
-                    >
-                      {item.manTotal}
-                    </Button>
-                  </td>
-                  <td>{item.equipmentTotal}</td>
-                  <td>
-                    <Button
-                      variant="outline-primary"
-                      as="a"
-                      href={`https://script.google.com/a/macros/hmbrandt.com/s/AKfycbwfFyzQdM8zjAuv46l13J8G7Z0DCxVNoaUHnIUcyUyftRAukViMTVy0HdNhggGCK4y7/exec?jobNumber=${jobNumber}&reportType=DailyReport&date=${item.date}&drId=${item.dailyReportId}`}
-                      target="_self"
-                    >
-                      {item.photosTotal}
-                    </Button>
-                  </td>
-                  <td>{item.toolsTotal}</td>
-                  <td>{item.dumpstersCount}</td>
-                  <td>
-                    <a
-                      href={`https://ckarlosdev.github.io/daily-report/#/?jobId=${jobId}&dailyReportId=${item.dailyReportId}`}
-                      target="_self"
-                    >
+              {currentItems?.map((order) => {
+                const employee = employees?.find(
+                  (emp) => emp.employeesId === order.employeeId,
+                );
+
+                const fullName = employee?.firstName + " " + employee?.lastName;
+
+                return (
+                  <tr key={order.id}>
+                    <td>{getDateFormat(order.orderDate)}</td>
+                    <td>{fullName}</td>
+                    <td>
                       <Button
                         variant="outline-primary"
+                        as="a"
                         style={{ fontWeight: "bold" }}
+                        href={`https://script.google.com/a/macros/hmbrandt.com/s/AKfycbzUG6YZDJzpaSTxIuf8xwPe9Bu3KsVeXhgwszMQAe_ZZfNOodySAD1GB14ODUMJ-eCL/exec?jobNumber=${jobNumber}&reportType=Change-Order&date=${order.orderDate}&drId=${order.id}`}
+                        target="_self"
                       >
-                        {isAuthorized ? "Update" : "View"}
+                        <MdOutlineAddAPhoto />
                       </Button>
-                    </a>
-                  </td>
-                </tr>
-              ))}
+                    </td>
+                    <td>
+                      <a
+                        href={`https://ckarlosdev.github.io/change-order/?jobId=${jobId}&changeOrderId=${order.id}`}
+                        target="_self"
+                      >
+                        <Button
+                          variant="outline-primary"
+                          style={{ fontWeight: "bold" }}
+                        >
+                          {isAuthorized ? "Update" : "View"}
+                        </Button>
+                      </a>
+                    </td>
+                  </tr>
+                );
+              })}
             </tbody>
           </table>
         </Col>
@@ -195,4 +191,4 @@ function DRTable({ jobNumber, jobId, handlePill }: Props) {
   );
 }
 
-export default DRTable;
+export default ChangeOrderTable;

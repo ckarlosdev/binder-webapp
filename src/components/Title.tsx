@@ -52,7 +52,7 @@ function Title({ children }: Props) {
               window.location.href = `https://ckarlosdev.github.io/HMBrandt/`;
             }}
           >
-            {"<"} Back
+            {"<"} Home
           </Button>
         </div>
         <div>

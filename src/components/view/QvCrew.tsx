@@ -18,11 +18,11 @@ function QvCrew({}: Props) {
   );
 
   if (isLoading) {
-    return <div>Cargando reporte...</div>;
+    return <div>Loading report...</div>;
   }
 
   if (!drData) {
-    return <p>Cargando datos...</p>;
+    return <p>Loading data...</p>;
   }
 
   const handleGetName = (employeeId: number) => {
