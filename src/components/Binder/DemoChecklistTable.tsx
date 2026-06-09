@@ -90,7 +90,7 @@ function DemoChecklistTable({ jobNumber, jobId }: Props) {
                         variant="outline-primary"
                         as="a"
                         style={{ fontWeight: "bold" }}
-                        href={`https://script.google.com/a/macros/hmbrandt.com/s/AKfycbzUG6YZDJzpaSTxIuf8xwPe9Bu3KsVeXhgwszMQAe_ZZfNOodySAD1GB14ODUMJ-eCL/exec?jobNumber=${jobNumber}&reportType=Before-Demo&date=${report.checklistDate}&drId=${report.demoChecklistsId}`}
+                        href={`https://script.google.com/a/macros/hmbrandt.com/s/AKfycbzvkyUu-M1uoQS7sGlcSuQEh0YEt7HUC3xxwejhRoam6PEm0cXuRNwDKSu39zf9Xw/exec?jobNumber=${jobNumber}&reportType=Before-Demo&date=${report.checklistDate}&drId=${report.demoChecklistsId}`}
                         target="_self"
                       >
                         {"Before"}
@@ -100,7 +100,7 @@ function DemoChecklistTable({ jobNumber, jobId }: Props) {
                         variant="outline-primary"
                         as="a"
                         style={{ fontWeight: "bold" }}
-                        href={`https://script.google.com/a/macros/hmbrandt.com/s/AKfycbzUG6YZDJzpaSTxIuf8xwPe9Bu3KsVeXhgwszMQAe_ZZfNOodySAD1GB14ODUMJ-eCL/exec?jobNumber=${jobNumber}&reportType=After-Demo&date=${report.checklistDate}&drId=${report.demoChecklistsId}`}
+                        href={`https://script.google.com/a/macros/hmbrandt.com/s/AKfycbzvkyUu-M1uoQS7sGlcSuQEh0YEt7HUC3xxwejhRoam6PEm0cXuRNwDKSu39zf9Xw/exec?jobNumber=${jobNumber}&reportType=After-Demo&date=${report.checklistDate}&drId=${report.demoChecklistsId}`}
                         target="_self"
                       >
                         {"After"}

@@ -21,9 +21,9 @@ function QvCrew({}: Props) {
     return <div>Loading report...</div>;
   }
 
-  if (!drData) {
-    return <p>Loading data...</p>;
-  }
+  // if (!drData) {
+  //   return <p>Loading data 3...</p>;
+  // }
 
   const handleGetName = (employeeId: number) => {
     const employee = employeesData?.find(

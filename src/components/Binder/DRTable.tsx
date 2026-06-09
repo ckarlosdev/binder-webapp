@@ -109,7 +109,7 @@ function DRTable({ jobNumber, jobId, handlePill }: Props) {
                     <Button
                       variant="outline-primary"
                       as="a"
-                      href={`https://script.google.com/a/macros/hmbrandt.com/s/AKfycbwfFyzQdM8zjAuv46l13J8G7Z0DCxVNoaUHnIUcyUyftRAukViMTVy0HdNhggGCK4y7/exec?jobNumber=${jobNumber}&reportType=DailyReport&date=${item.date}&drId=${item.dailyReportId}`}
+                      href={`https://script.google.com/a/macros/hmbrandt.com/s/AKfycbzvkyUu-M1uoQS7sGlcSuQEh0YEt7HUC3xxwejhRoam6PEm0cXuRNwDKSu39zf9Xw/exec?jobNumber=${jobNumber}&reportType=DailyReport&date=${item.date}&drId=${item.dailyReportId}`}
                       target="_self"
                     >
                       {item.photosTotal}

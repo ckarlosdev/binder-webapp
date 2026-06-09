@@ -97,7 +97,7 @@ function Home() {
         <Row className="justify-content-md-center">
           {loadingJobs ? (
             <div className="loading-state">
-              <p>Loading data...</p>
+              <p>Loading data 2...</p>
             </div>
           ) : (
             <Col>
@@ -109,6 +109,7 @@ function Home() {
             </Col>
           )}
         </Row>
+
         <Row className="justify-content-md-center">
           <Col>
             <div style={{ marginTop: "10px", textAlign: "center" }}>

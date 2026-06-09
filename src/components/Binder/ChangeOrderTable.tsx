@@ -68,7 +68,7 @@ function ChangeOrderTable({ jobNumber, jobId }: Props) {
   }
 
   if (error) {
-    return <div>Error loading Demo Checklist reports.</div>;
+    return <div>Error loading change orders.</div>;
   }
 
   const isAuthorized = userAuth?.roles?.some(
@@ -106,7 +106,7 @@ function ChangeOrderTable({ jobNumber, jobId }: Props) {
                         variant="outline-primary"
                         as="a"
                         style={{ fontWeight: "bold" }}
-                        href={`https://script.google.com/a/macros/hmbrandt.com/s/AKfycbzUG6YZDJzpaSTxIuf8xwPe9Bu3KsVeXhgwszMQAe_ZZfNOodySAD1GB14ODUMJ-eCL/exec?jobNumber=${jobNumber}&reportType=Change-Order&date=${order.orderDate}&drId=${order.id}`}
+                        href={`https://script.google.com/a/macros/hmbrandt.com/s/AKfycbzvkyUu-M1uoQS7sGlcSuQEh0YEt7HUC3xxwejhRoam6PEm0cXuRNwDKSu39zf9Xw/exec?jobNumber=${jobNumber}&reportType=Change-Order&date=${order.orderDate}&drId=${order.id}`}
                         target="_self"
                       >
                         <MdOutlineAddAPhoto />
