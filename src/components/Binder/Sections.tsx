@@ -12,6 +12,11 @@ import DemoChecklistTable from "./DemoChecklistTable";
 import useDemoChecklist from "../../hooks/useDemoChecklists";
 import useChangeOrder from "../../hooks/useChangeOrder";
 import ChangeOrderTable from "./ChangeOrderTable";
+import { LiaCalendarDaySolid } from "react-icons/lia";
+import { TiWarningOutline } from "react-icons/ti";
+import { GiDustCloud, GiMineTruck } from "react-icons/gi";
+import { VscChecklist } from "react-icons/vsc";
+import { TbArrowsExchange2 } from "react-icons/tb";
 
 type Props = {
   job?: Job;
@@ -65,11 +70,12 @@ function Sections({ job }: Props) {
         <Accordion.Item eventKey="0">
           <Accordion.Header>
             <div
-              className="ms-2 me-auto"
+              className="ms-2 me-auto d-flex align-items-center gap-2"
               style={{
                 fontWeight: "bold",
               }}
             >
+              <LiaCalendarDaySolid size={20} />
               Daily Report
             </div>
             <span
@@ -115,7 +121,11 @@ function Sections({ job }: Props) {
         </Accordion.Item>
         <Accordion.Item eventKey="1">
           <Accordion.Header>
-            <div className="ms-2 me-auto" style={{ fontWeight: "bold" }}>
+            <div
+              className="ms-2 me-auto d-flex align-items-center gap-2"
+              style={{ fontWeight: "bold" }}
+            >
+              <TiWarningOutline size={20} />
               Pre-Task Job Hazard
             </div>
             <span
@@ -157,7 +167,11 @@ function Sections({ job }: Props) {
         </Accordion.Item>
         <Accordion.Item eventKey="2">
           <Accordion.Header>
-            <div className="ms-2 me-auto" style={{ fontWeight: "bold" }}>
+            <div
+              className="ms-2 me-auto d-flex align-items-center gap-2"
+              style={{ fontWeight: "bold" }}
+            >
+              <GiMineTruck size={20} />
               Equipment Checklists
             </div>
             <span
@@ -199,7 +213,11 @@ function Sections({ job }: Props) {
         </Accordion.Item>
         <Accordion.Item eventKey="3">
           <Accordion.Header>
-            <div className="ms-2 me-auto" style={{ fontWeight: "bold" }}>
+            <div
+              className="ms-2 me-auto d-flex align-items-center gap-2"
+              style={{ fontWeight: "bold" }}
+            >
+              <GiDustCloud size={20} />
               Silica Report
             </div>
             <span
@@ -241,7 +259,11 @@ function Sections({ job }: Props) {
         </Accordion.Item>
         <Accordion.Item eventKey="4">
           <Accordion.Header>
-            <div className="ms-2 me-auto" style={{ fontWeight: "bold" }}>
+            <div
+              className="ms-2 me-auto d-flex align-items-center gap-2"
+              style={{ fontWeight: "bold" }}
+            >
+              <VscChecklist size={20} />
               Demo Checklist
             </div>
             <span
@@ -286,7 +308,11 @@ function Sections({ job }: Props) {
         </Accordion.Item>
         <Accordion.Item eventKey="5">
           <Accordion.Header>
-            <div className="ms-2 me-auto" style={{ fontWeight: "bold" }}>
+            <div
+              className="ms-2 me-auto d-flex align-items-center gap-2"
+              style={{ fontWeight: "bold" }}
+            >
+              <TbArrowsExchange2 size={20} />
               Change Orders
             </div>
             <span

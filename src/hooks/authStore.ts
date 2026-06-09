@@ -21,9 +21,9 @@ export const useAuthStore = create<AuthState>((set) => ({
   isAuthenticated: !!storedToken,
 
   // token:
-  //   "eyJhbGciOiJIUzI1NiJ9.eyJyb2xlcyI6WyJST0xFX0FETUlOIl0sInN1YiI6ImNyYW1pcmV6QGhtYnJhbmR0LmNvbSIsImlhdCI6MTc3Mzg2MzY3NiwiZXhwIjoxNzczODY0NTc2fQ.si4I-gRmlsRvj10AskgjmFYsjwLooEtFYSj6gq1voL0",
+  //   "",
   // refreshToken:
-  //   "ad923901-b306-4688-90d4-5ceeae50c120.a1fd6d37-54a3-4959-a02e-df750303b818",
+  //   "",
   // isAuthenticated: true,
 
   user: null,

@@ -107,6 +107,8 @@ export type DemoChecklist = {
   demoChecklistsStatus: string;
 };
 
+
+
 export type AuthUser = {
   email: string;
   fullName: string;
@@ -115,9 +117,9 @@ export type AuthUser = {
 };
 
 export type Role = {
-    id: number;
-    name: string;
-}
+  id: number;
+  name: string;
+};
 
 export type DREmployee = {
   drEmployeesId?: number | null;
@@ -224,6 +226,28 @@ export type TaskDumpster = {
   temporalId: string;
   id: number | null;
   materialType: string;
-  dumpsterSize: string; // 12 yrds, 20... Semi, gondola
+  dumpsterSize: string;
   quantity: number;
 };
+
+export interface DriveFile {
+  temporalId: string;
+  id: number | null;
+  jobId: number | null;
+  docType: string;
+  customName: string;
+  driveUrl: string;
+}
+
+export interface Incident {
+  temporalId: string;
+  id: number | null;
+  jobId: number | null;
+  employeeId: number | null;
+  incType: string;
+  customName: string;
+  date: string;
+  comment: string;
+  user: string;
+}
+
