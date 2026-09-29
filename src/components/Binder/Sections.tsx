@@ -17,6 +17,9 @@ import { TiWarningOutline } from "react-icons/ti";
 import { GiDustCloud, GiMineTruck } from "react-icons/gi";
 import { VscChecklist } from "react-icons/vsc";
 import { TbArrowsExchange2 } from "react-icons/tb";
+import useDelayLog from "../../hooks/useDelayLogs";
+import DelayLogTable from "./DelayLogTable";
+import { LuFileClock } from "react-icons/lu";
 
 type Props = {
   job?: Job;
@@ -29,6 +32,7 @@ function Sections({ job }: Props) {
   const { data: checkListReports } = useChecklist(job?.jobsId ?? 0);
   const { data: demoClReports } = useDemoChecklist(job?.number ?? "");
   const { data: changeOrders } = useChangeOrder(job?.jobsId!!);
+  const { data: delayLogs } = useDelayLog(job?.jobsId!!);
 
   const handlePill = (num: number) => {
     setPillDr(num);
@@ -346,6 +350,53 @@ function Sections({ job }: Props) {
                     }}
                   >
                     New Change Order
+                  </Button>
+                </div>
+              </Col>
+            </Row>
+          </Accordion.Body>
+        </Accordion.Item>
+
+        <Accordion.Item eventKey="6">
+          <Accordion.Header>
+            <div
+              className="ms-2 me-auto d-flex align-items-center gap-2"
+              style={{ fontWeight: "bold" }}
+            >
+              <LuFileClock size={20} />
+              Delay Logs
+            </div>
+            <span
+              className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
+              id="pill-HazardList"
+            >
+              {delayLogs?.length ?? 0}
+            </span>
+          </Accordion.Header>
+          <Accordion.Body>
+            <Row>
+              <Col>
+                <DelayLogTable jobNumber={job?.number} jobId={job?.jobsId} />
+              </Col>
+            </Row>
+            <Row>
+              <Col>
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "center",
+                    marginTop: "10px",
+                  }}
+                >
+                  <Button
+                    variant="outline-primary"
+                    style={{ fontWeight: "bold" }}
+                    onClick={() => {
+                      handleDemoClearStorage();
+                      window.location.href = `https://ckarlosdev.github.io/delay-log/?jobId=${job?.jobsId}&action=new`;
+                    }}
+                  >
+                    New Delay Log
                   </Button>
                 </div>
               </Col>

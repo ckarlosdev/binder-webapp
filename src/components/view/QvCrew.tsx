@@ -21,10 +21,6 @@ function QvCrew({}: Props) {
     return <div>Loading report...</div>;
   }
 
-  // if (!drData) {
-  //   return <p>Loading data 3...</p>;
-  // }
-
   const handleGetName = (employeeId: number) => {
     const employee = employeesData?.find(
       (employee) => employee.employeesId === employeeId,
@@ -66,43 +62,52 @@ function QvCrew({}: Props) {
                       </tr>
                     </thead>
                     <tbody>
-                      {drData?.employees?.map((assignment) => (
-                        <tr
-                          key={assignment.employeesId}
-                          style={{ verticalAlign: "middle" }}
-                        >
-                          <td>{handleGetName(assignment.employeesId!)}</td>
-                          <td>{assignment.inHour?.slice(0, 5)}</td>
-                          <td>{assignment.outHour?.slice(0, 5)}</td>
-                          <td>
-                            {calculateHoursDifference(
-                              assignment.inHour,
-                              assignment.outHour,
-                              assignment.lunch,
-                            )}
-                          </td>
-                          <td>
-                            {assignment.lunch ? (
-                              <span className="badge text-bg-success">Yes</span>
-                            ) : (
-                              <span className="badge text-bg-secondary">
-                                No
-                              </span>
-                            )}
-                          </td>
-                          <td>
-                            {assignment.ppe ? (
-                              <span className="badge text-bg-success">
-                                Completed
-                              </span>
-                            ) : (
-                              <span className="badge text-bg-warning">
-                                Incompleted
-                              </span>
-                            )}
-                          </td>
-                        </tr>
-                      ))}
+                      {drData?.employees?.map((assignment) => {
+                        const lunchValue =
+                          String(assignment.lunch).toLowerCase() === "true";
+                        const ppeValue =
+                          String(assignment.ppe).toLowerCase() === "true";
+
+                        return (
+                          <tr
+                            key={assignment.employeesId}
+                            style={{ verticalAlign: "middle" }}
+                          >
+                            <td>{handleGetName(assignment.employeesId!)}</td>
+                            <td>{assignment.inHour?.slice(0, 5)}</td>
+                            <td>{assignment.outHour?.slice(0, 5)}</td>
+                            <td>
+                              {calculateHoursDifference(
+                                assignment.inHour,
+                                assignment.outHour,
+                                lunchValue,
+                              )}
+                            </td>
+                            <td>
+                              {lunchValue ? (
+                                <span className="badge text-bg-success">
+                                  Yes
+                                </span>
+                              ) : (
+                                <span className="badge text-bg-secondary">
+                                  No
+                                </span>
+                              )}
+                            </td>
+                            <td>
+                              {ppeValue ? (
+                                <span className="badge text-bg-success">
+                                  Completed
+                                </span>
+                              ) : (
+                                <span className="badge text-bg-warning">
+                                  Incompleted
+                                </span>
+                              )}
+                            </td>
+                          </tr>
+                        );
+                      })}
                     </tbody>
                   </Table>
                 </div>

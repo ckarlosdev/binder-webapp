@@ -251,3 +251,32 @@ export interface Incident {
   user: string;
 }
 
+export type DelayLog = {
+  id: number | null;
+  jobId: number | null;
+  employeeId: number | null;
+  delayDate: string;
+  location: string;
+  delayDescription: string;
+  impactEquipment: string;
+  summary: string;
+  resolution: string;
+  workers: string;
+  cost: string;
+  delayStatus: string;
+  times: DelayTime[];
+  options: DelayOption[];
+};
+
+export type DelayTime = {
+  id: number | null;
+  logDate: string;
+  startTime: string;
+  endTime: string | null;
+};
+
+export type DelayOption = {
+  id: number | null;
+  optionItemId: number;
+  other: string | null;
+};

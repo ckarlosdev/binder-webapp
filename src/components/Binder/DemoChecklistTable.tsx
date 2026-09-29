@@ -90,17 +90,16 @@ function DemoChecklistTable({ jobNumber, jobId }: Props) {
                         variant="outline-primary"
                         as="a"
                         style={{ fontWeight: "bold" }}
-                        href={`https://script.google.com/a/macros/hmbrandt.com/s/AKfycbzvkyUu-M1uoQS7sGlcSuQEh0YEt7HUC3xxwejhRoam6PEm0cXuRNwDKSu39zf9Xw/exec?jobNumber=${jobNumber}&reportType=Before-Demo&date=${report.checklistDate}&drId=${report.demoChecklistsId}`}
+                        href={`https://script.google.com/a/macros/hmbrandt.com/s/AKfycbyAEL6qmN19RBHgWQMIKSKRZo4yrRYgxoHH4QC6XykO5xTmdtfBGrE7FmLtQL-6sD39/exec?jobNumber=${jobNumber}&reportType=Before-Demo&date=${report.checklistDate}&drId=${report.demoChecklistsId}`}
                         target="_self"
                       >
                         {"Before"}
-                      </Button>
-                      {" "}
+                      </Button>{" "}
                       <Button
                         variant="outline-primary"
                         as="a"
                         style={{ fontWeight: "bold" }}
-                        href={`https://script.google.com/a/macros/hmbrandt.com/s/AKfycbzvkyUu-M1uoQS7sGlcSuQEh0YEt7HUC3xxwejhRoam6PEm0cXuRNwDKSu39zf9Xw/exec?jobNumber=${jobNumber}&reportType=After-Demo&date=${report.checklistDate}&drId=${report.demoChecklistsId}`}
+                        href={`https://script.google.com/a/macros/hmbrandt.com/s/AKfycbyAEL6qmN19RBHgWQMIKSKRZo4yrRYgxoHH4QC6XykO5xTmdtfBGrE7FmLtQL-6sD39/exec?jobNumber=${jobNumber}&reportType=After-Demo&date=${report.checklistDate}&drId=${report.demoChecklistsId}`}
                         target="_self"
                       >
                         {"After"}

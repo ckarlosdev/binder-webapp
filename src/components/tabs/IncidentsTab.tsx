@@ -37,7 +37,12 @@ function IncidentsTab({ job }: Props) {
   };
 
   if (isLoading) return <div>...Loading files</div>;
-  if (error) return <div className="bg-white border border-top-0 rounded-bottom p-4 shadow-sm">No incidents added.</div>;
+  if (error)
+    return (
+      <div className="bg-white border border-top-0 rounded-bottom p-4 shadow-sm">
+        No incidents added.
+      </div>
+    );
 
   return (
     <div className="bg-white border border-top-0 rounded-bottom p-4 shadow-sm">
@@ -114,10 +119,11 @@ function IncidentsTab({ job }: Props) {
                   {/* Comentario en bloque separado, simulando una cita o nota sutil */}
                   {incident.comment && (
                     <div
-                      className="text-muted border-start ps-2 mt-1 text-truncate"
+                      className="text-muted border-start ps-2 mt-1 text-wrap text-break"
                       style={{
                         fontSize: "0.8rem",
-                        borderColor: "#dee2e6 !important",
+                        borderColor: "#dee2e6",
+                        whiteSpace: "pre-wrap", // Mantiene saltos de línea intencionales si el usuario presionó Enter
                       }}
                     >
                       {incident.comment}

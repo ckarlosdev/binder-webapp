@@ -106,7 +106,7 @@ function ChangeOrderTable({ jobNumber, jobId }: Props) {
                         variant="outline-primary"
                         as="a"
                         style={{ fontWeight: "bold" }}
-                        href={`https://script.google.com/a/macros/hmbrandt.com/s/AKfycbzvkyUu-M1uoQS7sGlcSuQEh0YEt7HUC3xxwejhRoam6PEm0cXuRNwDKSu39zf9Xw/exec?jobNumber=${jobNumber}&reportType=Change-Order&date=${order.orderDate}&drId=${order.id}`}
+                        href={`https://script.google.com/a/macros/hmbrandt.com/s/AKfycbyAEL6qmN19RBHgWQMIKSKRZo4yrRYgxoHH4QC6XykO5xTmdtfBGrE7FmLtQL-6sD39/exec?jobNumber=${jobNumber}&reportType=Change-Order&date=${order.orderDate}&drId=${order.id}`}
                         target="_self"
                       >
                         <MdOutlineAddAPhoto />
