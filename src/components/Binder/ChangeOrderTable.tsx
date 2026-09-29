@@ -6,6 +6,7 @@ import { format } from "date-fns";
 import { MdOutlineAddAPhoto } from "react-icons/md";
 import type { ChangeOrder } from "../../types";
 import useEmployees from "../../hooks/useEmployees";
+import { renderStatusBadge } from "../../utils/badge";
 
 type Props = { jobNumber?: string; jobId?: number };
 
@@ -83,6 +84,8 @@ function ChangeOrderTable({ jobNumber, jobId }: Props) {
           <table className="table table-hover table-striped table-sm align-middle">
             <thead className="table-primary" style={{ textAlign: "center" }}>
               <tr>
+                <th style={{ color: "#0c63e4" }}>ID</th>
+                <th style={{ color: "#0c63e4" }}>Status</th>
                 <th style={{ color: "#0c63e4" }}>Date</th>
                 <th style={{ color: "#0c63e4" }}>Foreman</th>
                 <th style={{ color: "#0c63e4" }}>Photos</th>
@@ -99,6 +102,8 @@ function ChangeOrderTable({ jobNumber, jobId }: Props) {
 
                 return (
                   <tr key={order.id}>
+                    <td>{order.id}</td>
+                    <td>{renderStatusBadge(order.orderStatus)}</td>
                     <td>{getDateFormat(order.orderDate)}</td>
                     <td>{fullName}</td>
                     <td>
