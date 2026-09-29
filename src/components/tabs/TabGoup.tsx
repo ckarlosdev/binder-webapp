@@ -5,6 +5,7 @@ import { ImFilesEmpty } from "react-icons/im";
 import { useOthersStore } from "../../stores/useOthersStore";
 import IncidentsTab from "./IncidentsTab";
 import type { Job } from "../../types";
+import { useIncidentStore } from "../../stores/useIndicentsStore";
 
 type Props = {
   job?: Job;
@@ -12,6 +13,7 @@ type Props = {
 
 function TabGoup({ job }: Props) {
   const { filesList } = useOthersStore();
+  const { incidentList } = useIncidentStore();
 
   return (
     <Tabs
@@ -41,7 +43,7 @@ function TabGoup({ job }: Props) {
             <RiAlarmWarningFill />
             <span style={{ fontWeight: "bold" }}>Incidents</span> {/* Texto */}
             <span className="badge rounded-pill bg-danger" id="pill-HazardList">
-              {0}
+              {incidentList.length}
             </span>
           </div>
         }

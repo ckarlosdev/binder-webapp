@@ -15,10 +15,16 @@ type Props = {
 
 function DRTable({ jobNumber, jobId, handlePill }: Props) {
   const [drDetail, setDrDetail] = useState<DrGral[]>();
+
   const { user: userAuth } = useAuthStore();
   const [currentPage, setCurrentPage] = useState(1);
   const { data: drData } = useDailyReport(jobNumber ?? "");
   const { setShow, setDrId } = useQViewStore();
+
+  const handleManPowerClick = (id: number) => {
+    setDrId(id);
+    setShow(true);
+  };
 
   useEffect(() => {
     if (drData) {
@@ -96,10 +102,7 @@ function DRTable({ jobNumber, jobId, handlePill }: Props) {
                   <td>
                     <Button
                       variant="outline-primary"
-                      onClick={() => {
-                        setDrId(item.dailyReportId);
-                        setShow(true);
-                      }}
+                      onClick={() => handleManPowerClick(item.dailyReportId)}
                     >
                       {item.manTotal}
                     </Button>
@@ -109,7 +112,7 @@ function DRTable({ jobNumber, jobId, handlePill }: Props) {
                     <Button
                       variant="outline-primary"
                       as="a"
-                      href={`https://script.google.com/a/macros/hmbrandt.com/s/AKfycbzvkyUu-M1uoQS7sGlcSuQEh0YEt7HUC3xxwejhRoam6PEm0cXuRNwDKSu39zf9Xw/exec?jobNumber=${jobNumber}&reportType=DailyReport&date=${item.date}&drId=${item.dailyReportId}`}
+                      href={`https://script.google.com/a/macros/hmbrandt.com/s/AKfycbyAEL6qmN19RBHgWQMIKSKRZo4yrRYgxoHH4QC6XykO5xTmdtfBGrE7FmLtQL-6sD39/exec?jobNumber=${jobNumber}&reportType=DailyReport&date=${item.date}&drId=${item.dailyReportId}`}
                       target="_self"
                     >
                       {item.photosTotal}
