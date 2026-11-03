@@ -29,8 +29,8 @@ function TabGoup({ job }: Props) {
         title={
           <div className="d-flex align-items-center justify-content-center gap-2">
             <ImFilesEmpty />
-            <span style={{ fontWeight: "bold" }}>Files</span>
-            <span className="badge rounded-pill bg-danger" id="pill-HazardList">
+            <span className="tab-label" style={{ fontWeight: "bold" }}>Files</span>
+            <span className="badge rounded-pill bg-danger">
               {filesList.length}
             </span>
           </div>
@@ -43,8 +43,8 @@ function TabGoup({ job }: Props) {
         title={
           <div className="d-flex align-items-center justify-content-center gap-2">
             <RiAlarmWarningFill />
-            <span style={{ fontWeight: "bold" }}>Incidents</span> {/* Texto */}
-            <span className="badge rounded-pill bg-danger" id="pill-HazardList">
+            <span className="tab-label" style={{ fontWeight: "bold" }}>Incidents</span>
+            <span className="badge rounded-pill bg-danger">
               {incidentList.length}
             </span>
           </div>
@@ -58,13 +58,13 @@ function TabGoup({ job }: Props) {
         title={
           <div className="d-flex align-items-center justify-content-center gap-2">
             <CiReceipt />
-            <span style={{ fontWeight: "bold" }}>Receipts</span>
+            <span className="tab-label" style={{ fontWeight: "bold" }}>Receipts</span>
           </div>
         }
       >
-        <div className="py-5 d-flex justify-content-center align-items-center">
+        <div className="py-4 py-md-5 px-2 d-flex justify-content-center align-items-center">
           <Card
-            className="text-center p-4 border-0 shadow-sm"
+            className="text-center p-3 p-md-4 border-0 shadow-sm w-100"
             style={{ maxWidth: "480px", borderRadius: "16px" }}
           >
             <div

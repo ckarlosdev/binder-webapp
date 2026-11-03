@@ -113,11 +113,14 @@ function FilesModal({ job }: Props) {
       onHide={closeModal}
       backdrop="static"
       keyboard={false}
+      fullscreen="sm-down"
+      centered
+      scrollable
     >
       <Modal.Header closeButton={!isBusy}>
         <Modal.Title>{isEditing ? "Edit File" : "New File"}</Modal.Title>
       </Modal.Header>
-      <Modal.Body className="px-4 py-3">
+      <Modal.Body className="px-3 px-md-4 py-3">
         <Form onSubmit={handleSubmit}>
           {/* FILA 1: Tipo de Documento y Nombre en paralelo */}
           <Row className="g-3 mb-3">
@@ -169,8 +172,7 @@ function FilesModal({ job }: Props) {
             <Col xs={12}>
               <Form.Group controlId="formDriveUrl">
                 <Form.Label className="fw-bold text-secondary small text-uppercase mb-1 d-flex align-items-center gap-1">
-                  <FaGoogleDrive className="text-success" /> Google drive link
-                  Drive
+                  <FaGoogleDrive className="text-success" /> Google Drive link
                 </Form.Label>
 
                 <InputGroup size="sm">
@@ -182,7 +184,7 @@ function FilesModal({ job }: Props) {
                     placeholder="https://drive.google.com/..."
                     value={fileData.driveUrl}
                     onChange={(e) => setFileData("driveUrl", e.target.value)}
-                    className="border-secondary-subtle"
+                    className="border-secondary-subtle url-input"
                     pattern="https://.*"
                     disabled={isBusy}
                     required
@@ -191,6 +193,7 @@ function FilesModal({ job }: Props) {
                     <Button
                       variant="outline-secondary"
                       size="sm"
+                      className="d-none d-sm-block"
                       onClick={resetFileData}
                       disabled={isBusy}
                     >
@@ -200,7 +203,7 @@ function FilesModal({ job }: Props) {
                   <Button
                     type="submit"
                     variant={isEditing ? "warning" : "primary"}
-                    className="fw-bold d-flex align-items-center gap-1 px-3"
+                    className="fw-bold d-none d-sm-flex align-items-center gap-1 px-3"
                     disabled={isBusy}
                   >
                     {isSavingFile ? (
@@ -223,6 +226,45 @@ function FilesModal({ job }: Props) {
                     </span>
                   </Button>
                 </InputGroup>
+
+                {/* Celular: botones debajo del enlace, a todo lo ancho */}
+                <div className="d-flex d-sm-none gap-2 mt-2">
+                  {isEditing && (
+                    <Button
+                      variant="outline-secondary"
+                      className="flex-fill"
+                      onClick={resetFileData}
+                      disabled={isBusy}
+                    >
+                      Cancel Edit
+                    </Button>
+                  )}
+                  <Button
+                    type="submit"
+                    variant={isEditing ? "warning" : "primary"}
+                    className="fw-bold d-flex align-items-center justify-content-center gap-1 flex-fill"
+                    disabled={isBusy}
+                  >
+                    {isSavingFile ? (
+                      <Spinner
+                        as="span"
+                        animation="border"
+                        size="sm"
+                        role="status"
+                        aria-hidden="true"
+                      />
+                    ) : (
+                      <FaPlus />
+                    )}
+                    <span>
+                      {isSavingFile
+                        ? "Saving..."
+                        : isEditing
+                          ? "Save Changes"
+                          : "Add File"}
+                    </span>
+                  </Button>
+                </div>
               </Form.Group>
             </Col>
           </Row>

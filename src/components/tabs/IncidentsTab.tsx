@@ -39,15 +39,15 @@ function IncidentsTab({ job }: Props) {
   if (isLoading) return <div>...Loading files</div>;
   if (error)
     return (
-      <div className="bg-white border border-top-0 rounded-bottom p-4 shadow-sm">
+      <div className="bg-white border border-top-0 rounded-bottom p-3 p-md-4 shadow-sm">
         No incidents added.
       </div>
     );
 
   return (
-    <div className="bg-white border border-top-0 rounded-bottom p-4 shadow-sm">
+    <div className="bg-white border border-top-0 rounded-bottom p-3 p-md-4 shadow-sm">
       {/* Cabecera Minimalista */}
-      <div className="d-flex justify-content-between align-items-center mb-3">
+      <div className="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-3">
         <h6
           className="text-secondary fw-bold m-0 text-uppercase tracking-wider"
           style={{ fontSize: "0.7rem" }}
@@ -85,11 +85,11 @@ function IncidentsTab({ job }: Props) {
             return (
               <div
                 key={incident.temporalId}
-                className="d-flex align-items-start gap-3 p-3 bg-white border rounded hover-bg-light transition-all"
+                className="d-flex align-items-start gap-2 gap-md-3 p-2 p-md-3 bg-white border rounded hover-bg-light transition-all"
                 style={{ fontSize: "0.85rem" }}
               >
                 {/* Icono de estado decorativo y minimalista */}
-                <div className="text-danger mt-0.5flex-shrink-0">
+                <div className="text-danger flex-shrink-0">
                   <FaExclamationCircle size={15} />
                 </div>
 

@@ -10,12 +10,12 @@ function CardJob({ job }: Props) {
     <>
       <Card className="shadow-sm border-0 mb-2 bg-light">
         {/* Reducimos el padding interno a p-2 para que sea súper compacto */}
-        <Card.Body className="p-3 px-3">
+        <Card.Body className="p-2 p-sm-3">
           <Row className="align-items-center">
             <Col
-              md={2}
+              lg={2}
               xs={12}
-              className="text-md-start text-center mb-2 mb-md-0"
+              className="text-lg-start text-center mb-2 mb-lg-0"
             >
               <span
                 className="fw-bold text-secondary text-uppercase small"
@@ -26,7 +26,7 @@ function CardJob({ job }: Props) {
             </Col>
 
             {/* Inputs en formato compacto */}
-            <Col md={10} xs={12}>
+            <Col lg={10} xs={12}>
               <Row className="g-2">
                 {" "}
                 {/* g-2 reduce el espacio entre las columnas de los inputs */}

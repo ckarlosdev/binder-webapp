@@ -31,7 +31,7 @@ function index({}: Props) {
 
   return (
     <>
-      <Container>
+      <Container className="px-2 px-sm-3">
         <Row>
           <Col>
             <Title children={"Binder"} />
@@ -53,8 +53,8 @@ function index({}: Props) {
             <Accordion className="mt-3">
               <Accordion.Item eventKey="0">
                 <Accordion.Header>
-                  <div className="d-flex align-items-center gap-2">
-                    <CgMoreO size={20} />{" "}
+                  <div className="section-header">
+                    <CgMoreO size={20} />
                     <span style={{ fontWeight: "bold" }}>Others</span>
                   </div>
                 </Accordion.Header>
@@ -67,15 +67,13 @@ function index({}: Props) {
         </Row>
         <Row className="justify-content-md-center">
           <Col style={{ display: "flex", justifyContent: "center" }}>
-            <div style={{ marginTop: "25px", marginBottom: "20px" }}>
+            <div
+              className="w-100 d-flex justify-content-center"
+              style={{ marginTop: "25px", marginBottom: "20px" }}
+            >
               <Button
                 variant="outline-primary"
-                style={{
-                  fontWeight: "bold",
-                  fontSize: "20px",
-                  width: "150px",
-                  height: "50px",
-                }}
+                className="back-btn"
                 onClick={() => navigate("/")}
               >
                 {"< Job List"}

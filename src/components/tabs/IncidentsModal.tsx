@@ -110,13 +110,16 @@ function IncidentsModal({ job }: Props) {
       onHide={closeModal}
       backdrop="static"
       keyboard={false}
+      fullscreen="sm-down"
+      centered
+      scrollable
     >
       <Modal.Header closeButton={!isBusy}>
         <Modal.Title>
           {isEditing ? "Edit Incident" : "New Incident"}
         </Modal.Title>
       </Modal.Header>
-      <Modal.Body className="px-4 py-3">
+      <Modal.Body className="px-3 px-md-4 py-3">
         <Form onSubmit={handleSubmit}>
           <Row className="g-3 mb-2">
             <Col md={6} xs={12}>

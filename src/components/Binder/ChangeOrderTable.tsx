@@ -1,4 +1,4 @@
-import { Button, Col, Row } from "react-bootstrap";
+import { Button } from "react-bootstrap";
 import useChangeOrder from "../../hooks/useChangeOrder";
 import { useAuthStore } from "../../hooks/authStore";
 import { useEffect, useState } from "react";
@@ -7,6 +7,9 @@ import { MdOutlineAddAPhoto } from "react-icons/md";
 import type { ChangeOrder } from "../../types";
 import useEmployees from "../../hooks/useEmployees";
 import { renderStatusBadge } from "../../utils/badge";
+import "../../styles/tables.css";
+import Pager from "../Pager";
+import { MobileCard, MobileCardList, MobileCardRow } from "../MobileCard";
 
 type Props = { jobNumber?: string; jobId?: number };
 
@@ -32,20 +35,6 @@ function ChangeOrderTable({ jobNumber, jobId }: Props) {
       setOrdersDetail(data);
     }
   }, [changeOrders]);
-
-  const pageNumbersToShow = 5;
-  let startPage = Math.max(1, currentPage - Math.floor(pageNumbersToShow / 2));
-  let endPage = startPage + pageNumbersToShow - 1;
-
-  if (endPage > totalPages) {
-    endPage = totalPages;
-    startPage = Math.max(1, endPage - pageNumbersToShow + 1);
-  }
-
-  const pages = [];
-  for (let i = startPage; i <= endPage; i++) {
-    pages.push(i);
-  }
 
   const handlePageChange = (page: number) => {
     if (page < 1 || page > totalPages) return;
@@ -77,121 +66,112 @@ function ChangeOrderTable({ jobNumber, jobId }: Props) {
       role.name === "ROLE_SUPERVISOR" || role.name === "ROLE_SUPERINTENDENT",
   );
 
+  const getForemanName = (order: ChangeOrder) => {
+    const employee = employees?.find(
+      (emp) => emp.employeesId === order.employeeId,
+    );
+    return employee?.firstName + " " + employee?.lastName;
+  };
+
+  const photosUrl = (order: ChangeOrder) =>
+    `https://script.google.com/a/macros/hmbrandt.com/s/AKfycbyAEL6qmN19RBHgWQMIKSKRZo4yrRYgxoHH4QC6XykO5xTmdtfBGrE7FmLtQL-6sD39/exec?jobNumber=${jobNumber}&reportType=Change-Order&date=${order.orderDate}&drId=${order.id}`;
+
+  const orderUrl = (order: ChangeOrder) =>
+    `https://ckarlosdev.github.io/change-order/?jobId=${jobId}&changeOrderId=${order.id}`;
+
   return (
-    <div className="custom-table-container table-responsive">
-      <Row>
-        <Col>
-          <table className="table table-hover table-striped table-sm align-middle">
-            <thead className="table-primary" style={{ textAlign: "center" }}>
-              <tr>
-                <th style={{ color: "#0c63e4" }}>ID</th>
-                <th style={{ color: "#0c63e4" }}>Status</th>
-                <th style={{ color: "#0c63e4" }}>Date</th>
-                <th style={{ color: "#0c63e4" }}>Foreman</th>
-                <th style={{ color: "#0c63e4" }}>Photos</th>
-                <th style={{ color: "#0c63e4" }}>Update</th>
+    <div>
+      {/* Tablet y computadora */}
+      <div className="d-none d-md-block custom-table-container table-responsive">
+        <table className="table table-hover table-striped table-sm align-middle">
+          <thead className="table-primary" style={{ textAlign: "center" }}>
+            <tr>
+              <th style={{ color: "#0c63e4" }}>ID</th>
+              <th style={{ color: "#0c63e4" }}>Status</th>
+              <th style={{ color: "#0c63e4" }}>Date</th>
+              <th style={{ color: "#0c63e4" }}>Foreman</th>
+              <th style={{ color: "#0c63e4" }}>Photos</th>
+              <th style={{ color: "#0c63e4" }}>Update</th>
+            </tr>
+          </thead>
+          <tbody style={{ textAlign: "center" }}>
+            {currentItems?.map((order) => (
+              <tr key={order.id}>
+                <td>{order.id}</td>
+                <td>{renderStatusBadge(order.orderStatus)}</td>
+                <td>{getDateFormat(order.orderDate)}</td>
+                <td>{getForemanName(order)}</td>
+                <td>
+                  <Button
+                    variant="outline-primary"
+                    as="a"
+                    style={{ fontWeight: "bold" }}
+                    href={photosUrl(order)}
+                    target="_self"
+                  >
+                    <MdOutlineAddAPhoto />
+                  </Button>
+                </td>
+                <td>
+                  <a href={orderUrl(order)} target="_self">
+                    <Button
+                      variant="outline-primary"
+                      style={{ fontWeight: "bold" }}
+                    >
+                      {isAuthorized ? "Update" : "View"}
+                    </Button>
+                  </a>
+                </td>
               </tr>
-            </thead>
-            <tbody style={{ textAlign: "center" }}>
-              {currentItems?.map((order) => {
-                const employee = employees?.find(
-                  (emp) => emp.employeesId === order.employeeId,
-                );
-
-                const fullName = employee?.firstName + " " + employee?.lastName;
-
-                return (
-                  <tr key={order.id}>
-                    <td>{order.id}</td>
-                    <td>{renderStatusBadge(order.orderStatus)}</td>
-                    <td>{getDateFormat(order.orderDate)}</td>
-                    <td>{fullName}</td>
-                    <td>
-                      <Button
-                        variant="outline-primary"
-                        as="a"
-                        style={{ fontWeight: "bold" }}
-                        href={`https://script.google.com/a/macros/hmbrandt.com/s/AKfycbyAEL6qmN19RBHgWQMIKSKRZo4yrRYgxoHH4QC6XykO5xTmdtfBGrE7FmLtQL-6sD39/exec?jobNumber=${jobNumber}&reportType=Change-Order&date=${order.orderDate}&drId=${order.id}`}
-                        target="_self"
-                      >
-                        <MdOutlineAddAPhoto />
-                      </Button>
-                    </td>
-                    <td>
-                      <a
-                        href={`https://ckarlosdev.github.io/change-order/?jobId=${jobId}&changeOrderId=${order.id}`}
-                        target="_self"
-                      >
-                        <Button
-                          variant="outline-primary"
-                          style={{ fontWeight: "bold" }}
-                        >
-                          {isAuthorized ? "Update" : "View"}
-                        </Button>
-                      </a>
-                    </td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
-        </Col>
-      </Row>
-      <Row>
-        <Col>
-          <div style={{ marginTop: "10px", textAlign: "center" }}>
-            <button
-              onClick={() => handlePageChange(currentPage - 1)}
-              disabled={currentPage === 1}
-              style={{ margin: "0 5px", padding: "5px 10px" }}
-            >
-              {"<"}
-            </button>
-
-            {startPage > 1 && (
-              <>
-                <button onClick={() => handlePageChange(1)}>1</button>
-                {startPage > 2 && <span>...</span>}
-              </>
-            )}
-
-            {pages.map((page) => (
-              <button
-                key={page}
-                onClick={() => handlePageChange(page)}
-                style={{
-                  margin: "0 5px",
-                  background: currentPage === page ? "#007bff" : "#eee",
-                  color: currentPage === page ? "white" : "black",
-                  border: "none",
-                  borderRadius: "4px",
-                  padding: "5px 10px",
-                  cursor: "pointer",
-                }}
-              >
-                {page}
-              </button>
             ))}
+          </tbody>
+        </table>
+      </div>
 
-            {endPage < totalPages && (
+      {/* Celular */}
+      <MobileCardList
+        isEmpty={!currentItems?.length}
+        emptyText="No change orders yet."
+      >
+        {currentItems?.map((order) => (
+          <MobileCard
+            key={order.id}
+            title={<>Change Order #{order.id}</>}
+            badge={renderStatusBadge(order.orderStatus)}
+            actions={
               <>
-                {endPage < totalPages - 1 && <span>...</span>}
-                <button onClick={() => handlePageChange(totalPages)}>
-                  {totalPages}
-                </button>
+                <Button
+                  variant="outline-primary"
+                  as="a"
+                  href={photosUrl(order)}
+                  target="_self"
+                >
+                  <MdOutlineAddAPhoto /> Photos
+                </Button>
+                <Button
+                  variant="primary"
+                  as="a"
+                  href={orderUrl(order)}
+                  target="_self"
+                >
+                  {isAuthorized ? "Update" : "View"}
+                </Button>
               </>
-            )}
+            }
+          >
+            <MobileCardRow label="Date">
+              {getDateFormat(order.orderDate)}
+            </MobileCardRow>
+            <MobileCardRow label="Foreman">{getForemanName(order)}</MobileCardRow>
+          </MobileCard>
+        ))}
+      </MobileCardList>
 
-            <button
-              onClick={() => handlePageChange(currentPage + 1)}
-              disabled={currentPage === totalPages}
-              style={{ margin: "0 5px", padding: "5px 10px" }}
-            >
-              {">"}
-            </button>
-          </div>
-        </Col>
-      </Row>
+      <Pager
+        currentPage={currentPage}
+        totalPages={totalPages}
+        onPageChange={handlePageChange}
+      />
     </div>
   );
 }

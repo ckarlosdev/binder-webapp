@@ -2,6 +2,7 @@ import { Col, Container, Row } from "react-bootstrap";
 import Title from "../components/Title";
 import JobTable from "../components/JobsTable";
 import Search from "../components/Search";
+import Pager from "../components/Pager";
 import type { Job } from "../types";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -24,20 +25,8 @@ function Home() {
 
   const totalPages = Math.ceil(jobsFiltered.length / itemsPerPage);
 
-  const pageNumbersToShow = 5;
-  let startPage = Math.max(1, currentPage - Math.floor(pageNumbersToShow / 2));
-  let endPage = startPage + pageNumbersToShow - 1;
-  if (endPage > totalPages) {
-    endPage = totalPages;
-    startPage = Math.max(1, endPage - pageNumbersToShow + 1);
-  }
-
-  const pages = [];
-  for (let i = startPage; i <= endPage; i++) {
-    pages.push(i);
-  }
-
   const handleDataFilter = (value: string) => {
+    setCurrentPage(1);
     if (!value) {
       setJobsFiltered(jobsDetail);
       return;
@@ -83,7 +72,7 @@ function Home() {
 
   return (
     <>
-      <Container>
+      <Container className="px-3 pb-4">
         <Row className="justify-content-md-center">
           <Col>
             <Title children={"Jobs"} />
@@ -96,8 +85,8 @@ function Home() {
         </Row>
         <Row className="justify-content-md-center">
           {loadingJobs ? (
-            <div className="loading-state">
-              <p>Loading data 2...</p>
+            <div className="loading-state text-center text-muted py-4">
+              <p>Loading jobs...</p>
             </div>
           ) : (
             <Col>
@@ -112,57 +101,11 @@ function Home() {
 
         <Row className="justify-content-md-center">
           <Col>
-            <div style={{ marginTop: "10px", textAlign: "center" }}>
-              <button
-                onClick={() => handlePageChange(currentPage - 1)}
-                disabled={currentPage === 1}
-                style={{ margin: "0 5px", padding: "5px 10px" }}
-              >
-                {"<"}
-              </button>
-
-              {startPage > 1 && (
-                <>
-                  <button onClick={() => handlePageChange(1)}>1</button>
-                  {startPage > 2 && <span>...</span>}
-                </>
-              )}
-
-              {pages.map((page) => (
-                <button
-                  key={page}
-                  onClick={() => handlePageChange(page)}
-                  style={{
-                    margin: "0 5px",
-                    background: currentPage === page ? "#007bff" : "#eee",
-                    color: currentPage === page ? "white" : "black",
-                    border: "none",
-                    borderRadius: "4px",
-                    padding: "5px 10px",
-                    cursor: "pointer",
-                  }}
-                >
-                  {page}
-                </button>
-              ))}
-
-              {endPage < totalPages && (
-                <>
-                  {endPage < totalPages - 1 && <span>...</span>}
-                  <button onClick={() => handlePageChange(totalPages)}>
-                    {totalPages}
-                  </button>
-                </>
-              )}
-
-              <button
-                onClick={() => handlePageChange(currentPage + 1)}
-                disabled={currentPage === totalPages}
-                style={{ margin: "0 5px", padding: "5px 10px" }}
-              >
-                {">"}
-              </button>
-            </div>
+            <Pager
+              currentPage={currentPage}
+              totalPages={totalPages}
+              onPageChange={handlePageChange}
+            />
           </Col>
         </Row>
       </Container>

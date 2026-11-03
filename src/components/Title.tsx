@@ -14,40 +14,25 @@ function Title({ children }: Props) {
   const { user: userAuth } = useAuthStore();
 
   if (loadingUser) {
-    return <Spinner />;
+    return (
+      <div className="d-flex justify-content-center py-4">
+        <Spinner />
+      </div>
+    );
   }
 
+  const userName = userAuth?.fullName || "Guest";
+
   return (
-    <div
-      style={{
-        textAlign: "center",
-        marginTop: "20px",
-        marginBottom: "10px",
-      }}
-    >
+    <header className="app-header">
       <div>
-        <img style={{ width: "250px" }} src={hmbLogo} alt="" />
+        <img className="app-header__logo" src={hmbLogo} alt="HMB logo" />
       </div>
-      <div style={{ display: "grid", gridTemplateColumns: " 300px 1fr 300px" }}>
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "row",
-            alignItems: "center",
-            justifyContent: "left",
-            gap: "10px",
-          }}
-        >
+      <div className="app-header__bar">
+        <div className="app-header__left">
           <Button
             variant="outline-secondary"
-            // onClick={() => onPrint()}
-            className="no-print"
-            style={{
-              borderRadius: "10px",
-              fontWeight: "bold",
-              width: "120px",
-              height: "40px",
-            }}
+            className="no-print app-header__btn"
             onClick={() => {
               window.location.href = `https://ckarlosdev.github.io/HMBrandt/`;
             }}
@@ -55,42 +40,23 @@ function Title({ children }: Props) {
             {"<"} Home
           </Button>
         </div>
-        <div>
-          <h2
-            style={{
-              fontWeight: "bold",
-              marginTop: "20px",
-              marginBottom: "10px",
-            }}
-          >
-            {children}
-          </h2>
-        </div>
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "row",
-            alignItems: "center",
-            justifyContent: "center",
-            gap: "10px",
-          }}
-        >
-          <div
-            style={{
-              fontSize: "0.85rem",
-              color: "#6c757d",
-              borderRight: "1px solid #dee2e6",
-              paddingRight: "15px",
-              fontWeight: "500",
-            }}
-          >
+        <div className="app-header__center">
+          <h2 className="app-header__title">{children}</h2>
+          {/* Usuario debajo del título en tablet/celular */}
+          <div className="app-header__user d-lg-none">
             <span style={{ opacity: 0.7 }}>User: </span>
-            <span className="text-dark">{userAuth?.fullName || "Guest"}</span>
+            <span className="text-dark">{userName}</span>
+          </div>
+        </div>
+        <div className="app-header__right">
+          <div className="app-header__user d-none d-lg-block">
+            <span style={{ opacity: 0.7 }}>User: </span>
+            <span className="text-dark">{userName}</span>
           </div>
           <LogoutButton />
         </div>
       </div>
-    </div>
+    </header>
   );
 }
 
