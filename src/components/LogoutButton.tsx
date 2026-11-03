@@ -31,12 +31,7 @@ const LogoutButton = () => {
       onClick={handleLogout}
       disabled={isLoading}
       variant="outline-danger"
-      style={{
-        borderRadius: "10px",
-        fontWeight: "bold",
-        width: "120px",
-        height: "40px",
-      }}
+      className="app-header__btn"
     >
       {isLoading ? <span>Logging out</span> : <>Logout</>}
     </Button>

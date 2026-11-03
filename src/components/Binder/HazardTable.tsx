@@ -1,9 +1,11 @@
-import { Button, Col, Row } from "react-bootstrap";
+import { Button } from "react-bootstrap";
 import useHazards from "../../hooks/useHazards";
 import { useState } from "react";
 import "../../styles/tables.css";
 import { format } from "date-fns";
 import { useAuthStore } from "../../hooks/authStore";
+import Pager from "../Pager";
+import { MobileCard, MobileCardList, MobileCardRow } from "../MobileCard";
 
 type Props = {
   jobId?: number;
@@ -19,20 +21,6 @@ function HazardTable({ jobId }: Props) {
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
   const currentItems = hazards?.slice(indexOfFirstItem, indexOfLastItem);
   const totalPages = Math.ceil((hazards ?? []).length / itemsPerPage);
-
-  const pageNumbersToShow = 5;
-  let startPage = Math.max(1, currentPage - Math.floor(pageNumbersToShow / 2));
-  let endPage = startPage + pageNumbersToShow - 1;
-
-  if (endPage > totalPages) {
-    endPage = totalPages;
-    startPage = Math.max(1, endPage - pageNumbersToShow + 1);
-  }
-
-  const pages = [];
-  for (let i = startPage; i <= endPage; i++) {
-    pages.push(i);
-  }
 
   const handlePageChange = (page: number) => {
     if (page < 1 || page > totalPages) return;
@@ -64,97 +52,72 @@ function HazardTable({ jobId }: Props) {
       role.name === "ROLE_SUPERVISOR" || role.name === "ROLE_SUPERINTENDENT",
   );
 
+  const reportUrl = (preTasksId: number | null) =>
+    `https://ckarlosdev.github.io/hazard-report/?jobId=${jobId}&hazardReportId=${preTasksId}`;
+
   return (
-    <div className="custom-table-container table-responsive">
-      <Row>
-        <Col>
-          <table className="table table-hover table-striped table-sm align-middle">
-            <thead className="table-primary" style={{ textAlign: "center" }}>
-              <tr>
-                <th style={{ color: "#0c63e4" }}>Date</th>
-                <th style={{ color: "#0c63e4" }}>Foreman</th>
-                <th style={{ color: "#0c63e4" }}>Update</th>
-              </tr>
-            </thead>
-            <tbody style={{ textAlign: "center" }}>
-              {currentItems?.map((hazard) => (
-                <tr key={hazard.preTasksId}>
-                  <td>{getDateFormat(hazard.date)}</td>
-                  <td>{hazard.supervisor}</td>
-                  <td>
-                    <a
-                      href={`https://ckarlosdev.github.io/hazard-report/?jobId=${jobId}&hazardReportId=${hazard.preTasksId}`}
-                      target="_self"
+    <div>
+      {/* Tablet y computadora */}
+      <div className="d-none d-md-block custom-table-container table-responsive">
+        <table className="table table-hover table-striped table-sm align-middle">
+          <thead className="table-primary" style={{ textAlign: "center" }}>
+            <tr>
+              <th style={{ color: "#0c63e4" }}>Date</th>
+              <th style={{ color: "#0c63e4" }}>Foreman</th>
+              <th style={{ color: "#0c63e4" }}>Update</th>
+            </tr>
+          </thead>
+          <tbody style={{ textAlign: "center" }}>
+            {currentItems?.map((hazard) => (
+              <tr key={hazard.preTasksId}>
+                <td>{getDateFormat(hazard.date)}</td>
+                <td>{hazard.supervisor}</td>
+                <td>
+                  <a href={reportUrl(hazard.preTasksId)} target="_self">
+                    <Button
+                      variant="outline-primary"
+                      style={{ fontWeight: "bold" }}
                     >
-                      <Button
-                        variant="outline-primary"
-                        style={{ fontWeight: "bold" }}
-                      >
-                        {isAuthorized ? "Update" : "View"}
-                      </Button>
-                    </a>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </Col>
-      </Row>
-      <Row>
-        <Col>
-          <div style={{ marginTop: "10px", textAlign: "center" }}>
-            <button
-              onClick={() => handlePageChange(currentPage - 1)}
-              disabled={currentPage === 1}
-              style={{ margin: "0 5px", padding: "5px 10px" }}
-            >
-              {"<"}
-            </button>
-
-            {startPage > 1 && (
-              <>
-                <button onClick={() => handlePageChange(1)}>1</button>
-                {startPage > 2 && <span>...</span>}
-              </>
-            )}
-
-            {pages.map((page) => (
-              <button
-                key={page}
-                onClick={() => handlePageChange(page)}
-                style={{
-                  margin: "0 5px",
-                  background: currentPage === page ? "#007bff" : "#eee",
-                  color: currentPage === page ? "white" : "black",
-                  border: "none",
-                  borderRadius: "4px",
-                  padding: "5px 10px",
-                  cursor: "pointer",
-                }}
-              >
-                {page}
-              </button>
+                      {isAuthorized ? "Update" : "View"}
+                    </Button>
+                  </a>
+                </td>
+              </tr>
             ))}
+          </tbody>
+        </table>
+      </div>
 
-            {endPage < totalPages && (
-              <>
-                {endPage < totalPages - 1 && <span>...</span>}
-                <button onClick={() => handlePageChange(totalPages)}>
-                  {totalPages}
-                </button>
-              </>
-            )}
+      {/* Celular */}
+      <MobileCardList
+        isEmpty={!currentItems?.length}
+        emptyText="No hazard reports yet."
+      >
+        {currentItems?.map((hazard) => (
+          <MobileCard
+            key={hazard.preTasksId}
+            title={getDateFormat(hazard.date)}
+            actions={
+              <Button
+                variant="primary"
+                as="a"
+                href={reportUrl(hazard.preTasksId)}
+                target="_self"
+              >
+                {isAuthorized ? "Update" : "View"}
+              </Button>
+            }
+          >
+            <MobileCardRow label="Foreman">{hazard.supervisor}</MobileCardRow>
+          </MobileCard>
+        ))}
+      </MobileCardList>
 
-            <button
-              onClick={() => handlePageChange(currentPage + 1)}
-              disabled={currentPage === totalPages}
-              style={{ margin: "0 5px", padding: "5px 10px" }}
-            >
-              {">"}
-            </button>
-          </div>
-        </Col>
-      </Row>
+      <Pager
+        currentPage={currentPage}
+        totalPages={totalPages}
+        onPageChange={handlePageChange}
+      />
     </div>
   );
 }

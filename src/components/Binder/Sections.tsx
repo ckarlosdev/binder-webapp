@@ -73,21 +73,13 @@ function Sections({ job }: Props) {
       <Accordion alwaysOpen>
         <Accordion.Item eventKey="0">
           <Accordion.Header>
-            <div
-              className="ms-2 me-auto d-flex align-items-center gap-2"
-              style={{
-                fontWeight: "bold",
-              }}
-            >
+            <div className="section-header">
               <LiaCalendarDaySolid size={20} />
               Daily Report
+              <span className="section-header__badge badge rounded-pill bg-danger">
+                {pillDr}
+              </span>
             </div>
-            <span
-              className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
-              id="pill-HazardList"
-            >
-              {pillDr}
-            </span>
           </Accordion.Header>
           <Accordion.Body>
             <Row>
@@ -101,16 +93,9 @@ function Sections({ job }: Props) {
             </Row>
             <Row>
               <Col>
-                <div
-                  style={{
-                    display: "flex",
-                    justifyContent: "center",
-                    marginTop: "10px",
-                  }}
-                >
+                <div className="section-actions">
                   <Button
                     variant="outline-primary"
-                    style={{ fontWeight: "bold" }}
                     onClick={() => {
                       handleDrStorage();
                       window.location.href = `https://ckarlosdev.github.io/daily-report/#/?jobId=${job?.jobsId}&action=new`;
@@ -125,19 +110,13 @@ function Sections({ job }: Props) {
         </Accordion.Item>
         <Accordion.Item eventKey="1">
           <Accordion.Header>
-            <div
-              className="ms-2 me-auto d-flex align-items-center gap-2"
-              style={{ fontWeight: "bold" }}
-            >
+            <div className="section-header">
               <TiWarningOutline size={20} />
               Pre-Task Job Hazard
+              <span className="section-header__badge badge rounded-pill bg-danger">
+                {hazards?.length ?? 0}
+              </span>
             </div>
-            <span
-              className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
-              id="pill-HazardList"
-            >
-              {hazards?.length ?? 0}
-            </span>
           </Accordion.Header>
           <Accordion.Body>
             <Row>
@@ -147,16 +126,9 @@ function Sections({ job }: Props) {
             </Row>
             <Row>
               <Col>
-                <div
-                  style={{
-                    display: "flex",
-                    justifyContent: "center",
-                    marginTop: "10px",
-                  }}
-                >
+                <div className="section-actions">
                   <Button
                     variant="outline-primary"
-                    style={{ fontWeight: "bold" }}
                     onClick={() => {
                       handleHazardClearStorage();
                       window.location.href = `https://ckarlosdev.github.io/hazard-report/?jobId=${job?.jobsId}&action=new`;
@@ -171,19 +143,13 @@ function Sections({ job }: Props) {
         </Accordion.Item>
         <Accordion.Item eventKey="2">
           <Accordion.Header>
-            <div
-              className="ms-2 me-auto d-flex align-items-center gap-2"
-              style={{ fontWeight: "bold" }}
-            >
+            <div className="section-header">
               <GiMineTruck size={20} />
               Equipment Checklists
+              <span className="section-header__badge badge rounded-pill bg-danger">
+                {checkListReports?.length ?? 0}
+              </span>
             </div>
-            <span
-              className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
-              id="pill-HazardList"
-            >
-              {checkListReports?.length ?? 0}
-            </span>
           </Accordion.Header>
           <Accordion.Body>
             <Row>
@@ -193,16 +159,9 @@ function Sections({ job }: Props) {
             </Row>
             <Row>
               <Col>
-                <div
-                  style={{
-                    display: "flex",
-                    justifyContent: "center",
-                    marginTop: "10px",
-                  }}
-                >
+                <div className="section-actions">
                   <Button
                     variant="outline-primary"
-                    style={{ fontWeight: "bold" }}
                     onClick={() => {
                       handleEquipmentClClearStorage();
                       window.location.href = `https://ckarlosdev.github.io/checklist-report/#/?jobId=${job?.jobsId}&action=new`;
@@ -217,19 +176,13 @@ function Sections({ job }: Props) {
         </Accordion.Item>
         <Accordion.Item eventKey="3">
           <Accordion.Header>
-            <div
-              className="ms-2 me-auto d-flex align-items-center gap-2"
-              style={{ fontWeight: "bold" }}
-            >
+            <div className="section-header">
               <GiDustCloud size={20} />
               Silica Report
+              <span className="section-header__badge badge rounded-pill bg-danger">
+                {silicaReports?.length ?? 0}
+              </span>
             </div>
-            <span
-              className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
-              id="pill-HazardList"
-            >
-              {silicaReports?.length ?? 0}
-            </span>
           </Accordion.Header>
           <Accordion.Body>
             <Row>
@@ -239,16 +192,9 @@ function Sections({ job }: Props) {
             </Row>
             <Row>
               <Col>
-                <div
-                  style={{
-                    display: "flex",
-                    justifyContent: "center",
-                    marginTop: "10px",
-                  }}
-                >
+                <div className="section-actions">
                   <Button
                     variant="outline-primary"
-                    style={{ fontWeight: "bold" }}
                     onClick={() => {
                       handleSilicaClearStorage();
                       window.location.href = `https://ckarlosdev.github.io/silica-report-project/#/?jobId=${job?.jobsId}&action=new`;
@@ -263,19 +209,13 @@ function Sections({ job }: Props) {
         </Accordion.Item>
         <Accordion.Item eventKey="4">
           <Accordion.Header>
-            <div
-              className="ms-2 me-auto d-flex align-items-center gap-2"
-              style={{ fontWeight: "bold" }}
-            >
+            <div className="section-header">
               <VscChecklist size={20} />
               Demo Checklist
+              <span className="section-header__badge badge rounded-pill bg-danger">
+                {demoClReports?.length ?? 0}
+              </span>
             </div>
-            <span
-              className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
-              id="pill-HazardList"
-            >
-              {demoClReports?.length ?? 0}
-            </span>
           </Accordion.Header>
           <Accordion.Body>
             <Row>
@@ -288,16 +228,9 @@ function Sections({ job }: Props) {
             </Row>
             <Row>
               <Col>
-                <div
-                  style={{
-                    display: "flex",
-                    justifyContent: "center",
-                    marginTop: "10px",
-                  }}
-                >
+                <div className="section-actions">
                   <Button
                     variant="outline-primary"
-                    style={{ fontWeight: "bold" }}
                     onClick={() => {
                       handleDemoClearStorage();
                       window.location.href = `https://ckarlosdev.github.io/demo-checklist-report/#/?jobId=${job?.jobsId}&action=new`;
@@ -312,19 +245,13 @@ function Sections({ job }: Props) {
         </Accordion.Item>
         <Accordion.Item eventKey="5">
           <Accordion.Header>
-            <div
-              className="ms-2 me-auto d-flex align-items-center gap-2"
-              style={{ fontWeight: "bold" }}
-            >
+            <div className="section-header">
               <TbArrowsExchange2 size={20} />
               Change Orders
+              <span className="section-header__badge badge rounded-pill bg-danger">
+                {changeOrders?.length ?? 0}
+              </span>
             </div>
-            <span
-              className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
-              id="pill-HazardList"
-            >
-              {changeOrders?.length ?? 0}
-            </span>
           </Accordion.Header>
           <Accordion.Body>
             <Row>
@@ -334,16 +261,9 @@ function Sections({ job }: Props) {
             </Row>
             <Row>
               <Col>
-                <div
-                  style={{
-                    display: "flex",
-                    justifyContent: "center",
-                    marginTop: "10px",
-                  }}
-                >
+                <div className="section-actions">
                   <Button
                     variant="outline-primary"
-                    style={{ fontWeight: "bold" }}
                     onClick={() => {
                       handleDemoClearStorage();
                       window.location.href = `https://ckarlosdev.github.io/change-order/?jobId=${job?.jobsId}&action=new`;
@@ -359,19 +279,13 @@ function Sections({ job }: Props) {
 
         <Accordion.Item eventKey="6">
           <Accordion.Header>
-            <div
-              className="ms-2 me-auto d-flex align-items-center gap-2"
-              style={{ fontWeight: "bold" }}
-            >
+            <div className="section-header">
               <LuFileClock size={20} />
               Delay Logs
+              <span className="section-header__badge badge rounded-pill bg-danger">
+                {delayLogs?.length ?? 0}
+              </span>
             </div>
-            <span
-              className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
-              id="pill-HazardList"
-            >
-              {delayLogs?.length ?? 0}
-            </span>
           </Accordion.Header>
           <Accordion.Body>
             <Row>
@@ -381,16 +295,9 @@ function Sections({ job }: Props) {
             </Row>
             <Row>
               <Col>
-                <div
-                  style={{
-                    display: "flex",
-                    justifyContent: "center",
-                    marginTop: "10px",
-                  }}
-                >
+                <div className="section-actions">
                   <Button
                     variant="outline-primary"
-                    style={{ fontWeight: "bold" }}
                     onClick={() => {
                       handleDemoClearStorage();
                       window.location.href = `https://ckarlosdev.github.io/delay-log/?jobId=${job?.jobsId}&action=new`;

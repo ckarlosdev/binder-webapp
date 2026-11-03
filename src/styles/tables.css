@@ -7,36 +7,22 @@
   border: none;
 }
 
-/* Ajustes específicos para iPads y tablets (Pantallas menores a 992px) */
-@media (max-width: 991px) {
+/* Tablets (768px – 991px): tabla compacta.
+   En celulares (< 768px) las tablas se reemplazan por tarjetas (MobileCard). */
+@media (min-width: 768px) and (max-width: 991.98px) {
   .custom-table-container table {
-    font-size: 0.8rem; /* Reducimos el tamaño de la letra */
+    font-size: 0.85rem;
   }
 
   .custom-table-container th,
   .custom-table-container td {
-    padding: 8px 4px !important; /* Reducimos el espacio interno de las celdas */
-    white-space: nowrap; /* Evita que el texto salte de línea y haga la fila gigante */
+    padding: 8px 4px !important;
+    white-space: nowrap;
   }
 
-  /* Si el botón "Update" es muy grande, lo ajustamos */
   .custom-table-container .btn {
-    padding: 0.2rem 0.4rem;
-    font-size: 0.75rem;
-  }
-}
-
-/* Técnica de ocultamiento selectivo (Opcional pero muy recomendada) */
-@media (max-width: 768px) {
-  /* En pantallas muy pequeñas (iPhone o iPad vertical), ocultamos columnas menos críticas 
-     para que no haya que hacer tanto scroll lateral */
-
-  /* Ejemplo: ocultar "Tools" y "Dumpsters" en pantallas pequeñas */
-  .custom-table-container th:nth-child(6),
-  .custom-table-container td:nth-child(6),
-  .custom-table-container th:nth-child(7),
-  .custom-table-container td:nth-child(7) {
-    display: none;
+    padding: 0.25rem 0.5rem;
+    font-size: 0.8rem;
   }
 }
 

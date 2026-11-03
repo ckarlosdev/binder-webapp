@@ -1,0 +1,361 @@
+/* ==========================================================================
+   Responsive base: phones (< 768px), tablets (768–991px), desktop (>= 992px)
+   ========================================================================== */
+
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+#root {
+  overflow-x: hidden;
+  min-height: 100vh;
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+/* ---------- Header (Title.tsx) ---------- */
+.app-header {
+  text-align: center;
+  margin-top: 20px;
+  margin-bottom: 10px;
+}
+
+.app-header__logo {
+  width: 250px;
+  max-width: 60%;
+  height: auto;
+}
+
+.app-header__bar {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: 10px;
+}
+
+.app-header__left {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.app-header__right {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.app-header__title {
+  font-weight: bold;
+  margin: 20px 0 10px;
+}
+
+.app-header__user {
+  font-size: 0.85rem;
+  color: #6c757d;
+  font-weight: 500;
+  border-right: 1px solid #dee2e6;
+  padding-right: 15px;
+}
+
+.app-header__btn {
+  border-radius: 10px;
+  font-weight: bold;
+  min-width: 120px;
+  height: 40px;
+  white-space: nowrap;
+}
+
+@media (max-width: 991.98px) {
+  .app-header {
+    margin-top: 12px;
+  }
+
+  /* Row 1: Home | Logout ; Row 2: title ; Row 3: user */
+  .app-header__bar {
+    grid-template-columns: 1fr 1fr;
+    grid-template-areas:
+      "left right"
+      "title title";
+    row-gap: 0;
+    margin-top: 10px;
+  }
+
+  .app-header__left {
+    grid-area: left;
+  }
+
+  .app-header__right {
+    grid-area: right;
+  }
+
+  .app-header__center {
+    grid-area: title;
+  }
+
+  .app-header__title {
+    margin: 12px 0 4px;
+    font-size: 1.6rem;
+  }
+
+  .app-header__user {
+    border-right: none;
+    padding-right: 0;
+  }
+}
+
+@media (max-width: 575.98px) {
+  .app-header__btn {
+    min-width: 0;
+    height: 38px;
+    padding: 0.25rem 0.75rem;
+    font-size: 0.9rem;
+  }
+
+  .app-header__title {
+    font-size: 1.4rem;
+  }
+}
+
+/* ---------- Search ---------- */
+.app-search {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 10px;
+}
+
+.app-search .input-group {
+  width: 100%;
+  max-width: 320px;
+}
+
+@media (max-width: 767.98px) {
+  .app-search .input-group {
+    max-width: none;
+  }
+}
+
+/* ---------- Mobile cards (tables -> cards on phones) ---------- */
+.m-card-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.m-card {
+  background: #fff;
+  border: 1px solid #dee2e6;
+  border-left: 4px solid #0c63e4;
+  border-radius: 10px;
+  padding: 12px 14px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+.m-card__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 6px;
+}
+
+.m-card__title {
+  font-weight: 700;
+  font-size: 1rem;
+  color: #212529;
+  margin: 0;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.m-card__row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 12px;
+  padding: 3px 0;
+  font-size: 0.9rem;
+}
+
+.m-card__label {
+  color: #6c757d;
+  font-size: 0.72rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  flex-shrink: 0;
+}
+
+.m-card__value {
+  text-align: right;
+  font-weight: 500;
+  color: #212529;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.m-card__stats {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 6px;
+  margin: 6px 0;
+}
+
+.m-card__stat {
+  background: #f1f5fb;
+  border-radius: 8px;
+  padding: 6px 8px;
+  text-align: center;
+}
+
+.m-card__stat .m-card__label {
+  display: block;
+}
+
+.m-card__stat-value {
+  font-weight: 700;
+  font-size: 1.05rem;
+  color: #0c63e4;
+}
+
+.m-card__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.m-card__actions > .btn,
+.m-card__actions > a {
+  flex: 1 1 0;
+  min-width: 0;
+}
+
+.m-card__actions .btn {
+  width: 100%;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+.m-card-empty {
+  text-align: center;
+  color: #6c757d;
+  font-size: 0.85rem;
+  padding: 12px;
+  background: #f8f9fa;
+  border: 1px dashed #dee2e6;
+  border-radius: 8px;
+}
+
+/* ---------- Pagination ---------- */
+.app-pager {
+  margin-top: 12px;
+  margin-bottom: 4px;
+}
+
+.app-pager .pagination {
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 4px;
+  margin-bottom: 0;
+}
+
+.app-pager .page-link {
+  min-width: 40px;
+  min-height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px !important;
+}
+
+/* ---------- Binder page ---------- */
+.section-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  font-weight: bold;
+  padding-right: 8px;
+}
+
+.section-header__badge {
+  margin-left: auto;
+}
+
+.section-actions {
+  display: flex;
+  justify-content: center;
+  margin-top: 10px;
+}
+
+.section-actions .btn {
+  font-weight: bold;
+}
+
+.back-btn {
+  font-weight: bold;
+  font-size: 1.15rem;
+  min-width: 150px;
+  min-height: 50px;
+}
+
+/* ---------- Touch / phone tweaks ---------- */
+@media (max-width: 767.98px) {
+  .btn {
+    min-height: 40px;
+  }
+
+  .btn-sm {
+    min-height: 34px;
+  }
+
+  /* Avoid iOS zoom-on-focus */
+  input.form-control,
+  select.form-select,
+  textarea.form-control {
+    font-size: 16px;
+  }
+
+  .accordion-button {
+    padding: 0.85rem 0.9rem;
+  }
+
+  .accordion-body {
+    padding: 0.75rem;
+  }
+
+  .section-actions .btn,
+  .back-btn {
+    width: 100%;
+  }
+
+  .tab-label {
+    display: none;
+  }
+
+  .nav-tabs .nav-link {
+    padding: 0.6rem 0.4rem;
+  }
+
+  .file-chip {
+    max-width: 100% !important;
+  }
+}
+
+@media (max-width: 575.98px) {
+  /* FilesModal: los botones se mueven debajo del input en celular */
+  .input-group > .form-control.url-input {
+    border-top-right-radius: var(--bs-border-radius-sm) !important;
+    border-bottom-right-radius: var(--bs-border-radius-sm) !important;
+  }
+
+  .modal-body {
+    padding-left: 1rem !important;
+    padding-right: 1rem !important;
+  }
+}

@@ -32,14 +32,14 @@ function FilesTab({ job }: Props) {
   if (isLoading) return <div>...Loading files</div>;
   if (error)
     return (
-      <div className="bg-white border border-top-0 rounded-bottom p-4 shadow-sm">
+      <div className="bg-white border border-top-0 rounded-bottom p-3 p-md-4 shadow-sm">
         No files added.
       </div>
     );
 
   return (
-    <div className="bg-white border border-top-0 rounded-bottom p-4 shadow-sm">
-      <div className="d-flex justify-content-between align-items-center mb-3">
+    <div className="bg-white border border-top-0 rounded-bottom p-3 p-md-4 shadow-sm">
+      <div className="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-3">
         <h6
           className="text-secondary fw-bold m-0 text-uppercase tracking-wider"
           style={{ fontSize: "0.75rem" }}
@@ -68,7 +68,7 @@ function FilesTab({ job }: Props) {
         /* Contenedor de Chips */
         <div
           className="d-flex flex-wrap gap-2 pe-1"
-          style={{ maxHeight: "120px", overflowY: "auto" }}
+          style={{ maxHeight: "240px", overflowY: "auto" }}
         >
           {filesList.map((file) => (
             <a
@@ -76,10 +76,10 @@ function FilesTab({ job }: Props) {
               href={file.driveUrl}
               target="_blank"
               rel="noreferrer"
-              className="d-flex align-items-center gap-2 px-2.5 py-1.5 bg-light border rounded-pill text-decoration-none text-dark shadow-2xs hover-bg-white transition-all"
+              className="file-chip d-flex align-items-center gap-2 px-2.5 py-2 bg-light border rounded-pill text-decoration-none text-dark shadow-2xs hover-bg-white transition-all"
               title={`Open ${file.customName}`}
               /* minWidth: 0 es el truco clave para que text-truncate funcione bien en Flexbox */
-              style={{ maxWidth: "220px", minWidth: "0" }}
+              style={{ maxWidth: "320px", minWidth: "0" }}
             >
               {/* Icono de Drive - flex-shrink-0 evita que se aplaste */}
               <span
@@ -91,7 +91,7 @@ function FilesTab({ job }: Props) {
 
               {/* Nombre del archivo - El text-truncate ahora sí respetará el espacio */}
               <span
-                className="fw-medium text-truncate small"
+                className="fw-medium small flex-shrink-0"
                 style={{ fontSize: "0.78rem", fontWeight: "bold" }}
               >
                 {file.docType}
@@ -99,8 +99,8 @@ function FilesTab({ job }: Props) {
 
               {/* Tipo de documento - flex-shrink-0 evita que desaparezca */}
               <span
-                className="text-muted fw-bold small flex-shrink-0"
-                style={{ fontSize: "0.62rem", marginRight: "7px" }}
+                className="text-muted fw-bold small text-truncate"
+                style={{ fontSize: "0.62rem", marginRight: "7px", minWidth: 0 }}
               >
                 • {file.customName || "DOC"}
               </span>
