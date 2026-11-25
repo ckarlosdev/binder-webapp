@@ -1,9 +1,9 @@
-import { Button } from "react-bootstrap";
+import { Button, Dropdown, Form } from "react-bootstrap";
 import useChangeOrder from "../../hooks/useChangeOrder";
 import { useAuthStore } from "../../hooks/authStore";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { format } from "date-fns";
-import { MdOutlineAddAPhoto } from "react-icons/md";
+import { MdOutlineAddAPhoto, MdViewColumn } from "react-icons/md";
 import type { ChangeOrder } from "../../types";
 import useEmployees from "../../hooks/useEmployees";
 import { renderStatusBadge } from "../../utils/badge";
@@ -13,28 +13,40 @@ import { MobileCard, MobileCardList, MobileCardRow } from "../MobileCard";
 
 type Props = { jobNumber?: string; jobId?: number };
 
+const SHOW_ID_KEY = "changeOrders.showId";
+
+const byDateAsc = (a: ChangeOrder, b: ChangeOrder) =>
+  new Date(a.orderDate).getTime() - new Date(b.orderDate).getTime() ||
+  (a.id ?? 0) - (b.id ?? 0);
+
 function ChangeOrderTable({ jobNumber, jobId }: Props) {
-  const [ordersDetail, setOrdersDetail] = useState<ChangeOrder[]>();
-  const { data: changeOrders, isLoading, error } = useChangeOrder(jobId!!);
+  const { data: changeOrders, isLoading, error } = useChangeOrder(jobId!);
   const { data: employees } = useEmployees();
   const [currentPage, setCurrentPage] = useState(1);
   const { user: userAuth } = useAuthStore();
+  const [showId, setShowId] = useState(
+    () => localStorage.getItem(SHOW_ID_KEY) === "true",
+  );
+
+  useEffect(() => {
+    localStorage.setItem(SHOW_ID_KEY, String(showId));
+  }, [showId]);
+
+  // Copias para no mutar la caché de react-query.
+  // reportNumbers: el más viejo por fecha = 1, el siguiente = 2, ...
+  const { ordersDetail, reportNumbers } = useMemo(() => {
+    const asc = [...(changeOrders ?? [])].sort(byDateAsc);
+    return {
+      ordersDetail: [...asc].reverse(),
+      reportNumbers: new Map(asc.map((order, i) => [order.id, i + 1])),
+    };
+  }, [changeOrders]);
 
   const itemsPerPage = 5;
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentItems = ordersDetail?.slice(indexOfFirstItem, indexOfLastItem);
-  const totalPages = Math.ceil((ordersDetail ?? []).length / itemsPerPage);
-
-  useEffect(() => {
-    if (changeOrders) {
-      const data = changeOrders.sort(
-        (a, b) =>
-          new Date(b.orderDate).getTime() - new Date(a.orderDate).getTime(),
-      );
-      setOrdersDetail(data);
-    }
-  }, [changeOrders]);
+  const currentItems = ordersDetail.slice(indexOfFirstItem, indexOfLastItem);
+  const totalPages = Math.ceil(ordersDetail.length / itemsPerPage);
 
   const handlePageChange = (page: number) => {
     if (page < 1 || page > totalPages) return;
@@ -81,12 +93,35 @@ function ChangeOrderTable({ jobNumber, jobId }: Props) {
 
   return (
     <div>
+      {/* Selector de columnas visibles */}
+      <div className="d-flex justify-content-end mb-1">
+        <Dropdown align="end" autoClose="outside">
+          <Dropdown.Toggle
+            variant="link"
+            size="sm"
+            className="text-decoration-none d-inline-flex align-items-center gap-1"
+          >
+            <MdViewColumn /> Columns
+          </Dropdown.Toggle>
+          <Dropdown.Menu className="px-3 py-2">
+            <Form.Check
+              type="switch"
+              id="co-show-id"
+              label="Show ID"
+              checked={showId}
+              onChange={(e) => setShowId(e.target.checked)}
+            />
+          </Dropdown.Menu>
+        </Dropdown>
+      </div>
+
       {/* Tablet y computadora */}
       <div className="d-none d-md-block custom-table-container table-responsive">
         <table className="table table-hover table-striped table-sm align-middle">
           <thead className="table-primary" style={{ textAlign: "center" }}>
             <tr>
-              <th style={{ color: "#0c63e4" }}>ID</th>
+              <th style={{ color: "#0c63e4" }}>Report #</th>
+              {showId && <th style={{ color: "#0c63e4" }}>ID</th>}
               <th style={{ color: "#0c63e4" }}>Status</th>
               <th style={{ color: "#0c63e4" }}>Date</th>
               <th style={{ color: "#0c63e4" }}>Foreman</th>
@@ -97,7 +132,8 @@ function ChangeOrderTable({ jobNumber, jobId }: Props) {
           <tbody style={{ textAlign: "center" }}>
             {currentItems?.map((order) => (
               <tr key={order.id}>
-                <td>{order.id}</td>
+                <td className="fw-semibold">{reportNumbers.get(order.id)}</td>
+                {showId && <td className="text-muted small">{order.id}</td>}
                 <td>{renderStatusBadge(order.orderStatus)}</td>
                 <td>{getDateFormat(order.orderDate)}</td>
                 <td>{getForemanName(order)}</td>
@@ -136,7 +172,7 @@ function ChangeOrderTable({ jobNumber, jobId }: Props) {
         {currentItems?.map((order) => (
           <MobileCard
             key={order.id}
-            title={<>Change Order #{order.id}</>}
+            title={<>Change Order #{reportNumbers.get(order.id)}</>}
             badge={renderStatusBadge(order.orderStatus)}
             actions={
               <>
@@ -159,6 +195,7 @@ function ChangeOrderTable({ jobNumber, jobId }: Props) {
               </>
             }
           >
+            {showId && <MobileCardRow label="ID">{order.id}</MobileCardRow>}
             <MobileCardRow label="Date">
               {getDateFormat(order.orderDate)}
             </MobileCardRow>
