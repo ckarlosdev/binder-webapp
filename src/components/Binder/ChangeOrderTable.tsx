@@ -19,6 +19,21 @@ const byDateAsc = (a: ChangeOrder, b: ChangeOrder) =>
   new Date(a.orderDate).getTime() - new Date(b.orderDate).getTime() ||
   (a.id ?? 0) - (b.id ?? 0);
 
+const hasOrderNumber = (o: ChangeOrder) =>
+  typeof o.orderNumber === "number" && o.orderNumber > 0;
+
+// Mayor orderNumber primero. Si se repite, el más reciente por fecha primero.
+// Los que no tienen número van al final, ordenados por fecha.
+const byOrderNumberDesc = (a: ChangeOrder, b: ChangeOrder) => {
+  const aHas = hasOrderNumber(a);
+  const bHas = hasOrderNumber(b);
+  if (aHas !== bHas) return aHas ? -1 : 1;
+  if (aHas && a.orderNumber !== b.orderNumber) {
+    return b.orderNumber - a.orderNumber;
+  }
+  return byDateAsc(b, a);
+};
+
 function ChangeOrderTable({ jobNumber, jobId }: Props) {
   const { data: changeOrders, isLoading, error } = useChangeOrder(jobId!);
   const { data: employees } = useEmployees();
@@ -32,15 +47,11 @@ function ChangeOrderTable({ jobNumber, jobId }: Props) {
     localStorage.setItem(SHOW_ID_KEY, String(showId));
   }, [showId]);
 
-  // Copias para no mutar la caché de react-query.
-  // reportNumbers: el más viejo por fecha = 1, el siguiente = 2, ...
-  const { ordersDetail, reportNumbers } = useMemo(() => {
-    const asc = [...(changeOrders ?? [])].sort(byDateAsc);
-    return {
-      ordersDetail: [...asc].reverse(),
-      reportNumbers: new Map(asc.map((order, i) => [order.id, i + 1])),
-    };
-  }, [changeOrders]);
+  // Copia para no mutar la caché de react-query.
+  const ordersDetail = useMemo(
+    () => [...(changeOrders ?? [])].sort(byOrderNumberDesc),
+    [changeOrders],
+  );
 
   const itemsPerPage = 5;
   const indexOfLastItem = currentPage * itemsPerPage;
@@ -132,7 +143,9 @@ function ChangeOrderTable({ jobNumber, jobId }: Props) {
           <tbody style={{ textAlign: "center" }}>
             {currentItems?.map((order) => (
               <tr key={order.id}>
-                <td className="fw-semibold">{reportNumbers.get(order.id)}</td>
+                <td className="fw-semibold">
+                  {hasOrderNumber(order) ? order.orderNumber : "—"}
+                </td>
                 {showId && <td className="text-muted small">{order.id}</td>}
                 <td>{renderStatusBadge(order.orderStatus)}</td>
                 <td>{getDateFormat(order.orderDate)}</td>
@@ -172,7 +185,7 @@ function ChangeOrderTable({ jobNumber, jobId }: Props) {
         {currentItems?.map((order) => (
           <MobileCard
             key={order.id}
-            title={<>Change Order #{reportNumbers.get(order.id)}</>}
+            title={<>Change Order #{hasOrderNumber(order) ? order.orderNumber : "—"}</>}
             badge={renderStatusBadge(order.orderStatus)}
             actions={
               <>

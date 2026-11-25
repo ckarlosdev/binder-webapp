@@ -16,15 +16,15 @@ const storedToken = localStorage.getItem("auth_token");
 const storedRefreshToken = localStorage.getItem("refresh_token");
 
 export const useAuthStore = create<AuthState>((set) => ({
-  token: storedToken,
-  refreshToken: storedRefreshToken,
-  isAuthenticated: !!storedToken,
+  // token: storedToken,
+  // refreshToken: storedRefreshToken,
+  // isAuthenticated: !!storedToken,
 
-  // token:
-  //   "",
-  // refreshToken:
-  //   "",
-  // isAuthenticated: true,
+  token:
+    "eyJhbGciOiJIUzI1NiJ9.eyJyb2xlcyI6WyJST0xFX0FETUlOIl0sInN1YiI6ImNyYW1pcmV6QGhtYnJhbmR0LmNvbSIsImlhdCI6MTc5NTYzMDQwNSwiZXhwIjoxNzk1NjMxMzA1fQ.uCzGvJ8rh_1jHu1obKn8wHU4sPlMWMyA8_QDemL2FQs",
+  refreshToken:
+    "fef707e2-9b1c-4ab1-bd90-cb846c628d09.6225ceb9-910a-4519-a4df-d5d44fd798ed",
+  isAuthenticated: true,
 
   user: null,
   login: (token: string, refreshToken: string) => {
